@@ -36,37 +36,6 @@ char	*ft_strchr(const char *s, int c)
 */
 
 // strrchr는 strchr와 다르게 동일한 문자가 있을때 가장 나중거 체크
-/*char	*ft_strrchr(const char *s, int c)
-{
-	char	d;
-	char	*temp;
-	int		flag;
-	int		i;
-
-	d = c;
-	i = 0;
-	flag = 0;
-	if (d == '\0')
-	{
-		while (s[i] != '\0')
-			i++;
-		return ((char *)&s[i]);
-	}
-	while (s[i] != '\0')
-	{
-		if (s[i] == d)
-		{
-			flag = 1;
-			temp = (char *)&s[i];
-		}
-		i++;
-	}
-	if (flag == 1)
-		return (temp);
-	return (0);
-}
-*/
-
 char	*ft_strrchr(const char *s, int c)
 {
 	char	d;
@@ -75,17 +44,16 @@ char	*ft_strrchr(const char *s, int c)
 	int		i;
 
 	d = c;
-	i = 0;
+	i = -1;
 	flag = 0;
 	if (d == '\0')
 	{
-		while (s[i] != '\0')
-			i++;
+		while (s[++i] != '\0');
 		return ((char *)&s[i]);
 	}
-	while (s[i++] != '\0')
+	while (s[++i] != '\0')
 	{
-		if (s[i] == d && ++flag > 0)
+		if (++flag >= 0 && s[i] == d)
 			temp = (char *)&s[i];
 	}
 	if (flag != 0)
@@ -94,9 +62,11 @@ char	*ft_strrchr(const char *s, int c)
 }
 int	main()
 {
-	char	str[] = "FiSghting 42SeouSl";
-	char	*ptr = strrchr(str, '\0');
-	char	*ptr2 = ft_strrchr(str, '\0');
+//	char	str[] = "FiSghting 42SeouSl";
+//	char	str[] = "abbbbbbbbbbbbbbbbb";
+	char	str[] = "\xc4\xab\xc5\x93\xcb\x99\xcb\x80\xcb\x98\xc2\xaf\xcb\x87\xc2\xb8\xc2\xaf.\xc5\x93\xc2\xab\xe2\x80\x98\xe2\x80\x93\xe2\x80\x93\xe2\x84\xa2\xc2\xaa\xe2\x80\xa2\xc2\xa1\xc2\xb6\xc2\xa2\xcb\x9c\xcb\x80";
+	char	*ptr = strrchr(str, L'\xe2\x80\x93');
+	char	*ptr2 = ft_strrchr(str, L'\xe2\x80\x93');
 
 	printf("ptr = %p, ptr2 = %p\n", ptr, ptr2);
 	if (ptr != 0)

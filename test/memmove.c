@@ -11,15 +11,27 @@
 
 void	*ft_memmove(void *dest, const void *src, size_t len)
 {
-	size_t	i;
+	size_t			i;
+	unsigned char	*dp;
+	unsigned char	*sp;
 
-	i = 0;
-	while (i < len)
+	dp = (unsigned char *)dest;
+	sp = (unsigned char *)src;
+	if (dest == 0 && src == 0)
+		return (0);
+	i = -1;
+	if (dp <= sp)
 	{
-		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
-		i++;
+		while (++i < len)
+			dp[i] = sp[i];
 	}
-	return (dest);
+	else if (dp > sp)
+	{
+		len--;
+		while (++i <= len)
+			dp[len - i] = sp[len - i];
+	}
+	return ((void *)dp);
 }
 
 #include <string.h>
@@ -28,11 +40,36 @@ void	*ft_memmove(void *dest, const void *src, size_t len)
 
 int	main()
 {
-	char	d1[42];// = {'4', '2', 's', 'e', 'o', 'u', 'l', '!'};
-	char	d2[42];// = {'4', '2', 's', 'e', 'o', 'u', 'l', '!'};
-	printf("origin d1 = %s\n origin d2= %s\n", d1, d2);
-	const char	b[42] = {'4', '2', 's', 'e', 'o', 'u', 'l', '!'};
-	printf("src = 42seoul!, memmove = %s\n", memmove(d1, b, sizeof(b)));
-	printf("src = 42seoul!, ft_memmove = %s\n", ft_memmove(d2, b, sizeof(b)));
+	char	array1[10] = {' ',' ','t','e','s','t'};
+	char	array2[10] = {'t','e','s','t',' ',' '};
+	ft_memmove(array1, array1 + 2, 4);
+	ft_memmove(array2 + 2, array2, 4);
+// 	char *src = "";
+//	char *dst1 = "";
+ //	int size = strlen(src);
 
+//	ft_memmove(dst1, src - 1, 0);
+//	ft_memmove(dst1, src - 1, size);
+	printf("testst : %s\n", array1);
+	printf("tetest : %s\n", array2);
 }
+
+/*
+int	main()
+{
+//	char	d1[42];// = {'4', '2', 's', 'e', 'o', 'u', 'l', '!'};
+//	char	d2[42];// = {'4', '2', 's', 'e', 'o', 'u', 'l', '!'};
+	char	array[7] = {'t', 'e', 's', 't', ' ', ' ', '\0'};
+//	char	bi[6] = {' ', ' ', 't', 'e', 's', 't'};
+//	printf("origin d1 = %s\n origin d2= %s\n", b, b1);
+//	char	*ptr = b + 2;
+//	char	*ptr1 = b1 + 2;
+//	printf("origin ptr = %s\n", ptr);
+//	printf("origin ptr1 = %s\n", ptr1);
+	memmove(array + 2, array, 4);
+	printf("dst=test+2, src = test, count = 4  memmove = %s\n", array);
+//	printf("dst=test+2, src = test, count = 4  ft_memmove = %s\n", ft_memmove(ptr1, b1, 4));
+//	printf("src = 42seoul!, memmove = %s\n", memmove(b, ptr, 4));
+//	printf("src = 42seoul!, ft_memmove = %s\n", ft_memmove(ptr1, b1, sizeof(b1)));
+
+}*/
