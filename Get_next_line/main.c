@@ -7,6 +7,16 @@ int	main()
 	char	*gnl;
 
 	fd = open("test.txt", O_RDONLY);
+
+	gnl = get_next_line(fd);
+	printf("gnl = %s\n", gnl);
+
+	gnl = get_next_line(fd);
+	printf("gnl = %s\n", gnl);
+
+	gnl = get_next_line(fd);
+	printf("gnl = %s\n", gnl);
+
 	gnl = get_next_line(fd);
 	printf("gnl = %s\n", gnl);
 }
