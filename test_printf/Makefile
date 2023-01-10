@@ -22,6 +22,15 @@ all : ${NAME}
 ${NAME} : ${OBJS}
 	ar -rc ${NAME} $^ ${LIBFT}
 
+test : 
+	${CC} ${CFLAGS} ${LIBFT} ${NAME} test.c -I ${HEAD}
+
+debug :
+	${CC} -g3 ${LIBFT} ${NAME} test.c -I ${HEAD}
+
+san :
+	${CC} -g3 -fsanitize=address ${LIBFT} ${NAME} test.c -I ${HEAD}
+
 clean :
 	rm -f ${OBJS}
 

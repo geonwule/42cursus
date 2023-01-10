@@ -1,87 +1,100 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
+#include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
 {
-	char	d;
+	char		buf[BUFFER_SIZE + 1];
+	static int	flag;
+
+	while (1)
+	{
+		*readsize = read(fd, buf, BUFFER_SIZE);
+		if (*readsize < 0 || (*readsize == 0 && flag++ == 0))
+		{
+			return (0);
+		}
+		if (*readsize == 0)
+			break ;
+		buf[*readsize] = '\0';
+		back = ft_strjoin(back, buf);
+		*n_ptr = ft_strchar(back, '\n');
+		if (*n_ptr != NULL)
+			break ;
+	}
+	return (back);
+}
+
+char	*ret_set(char *back, char *n_ptr)
+{
+	char	*ret;
 	int		i;
 
-	d = c;
 	i = 0;
-	if (d == '\0')
+	while (back[i] != '\0')
 	{
-		while (s[i] != '\0')
+		if (&back[i] == n_ptr)
+		{
 			i++;
-		return ((char *)&s[i]);
-	}
-	while (s[i] != '\0')
-	{
-		if (s[i] == d)
-			return ((char *)&s[i]);
+			break ;
+		}
 		i++;
 	}
-	return (0);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	src_len;
-
-	src_len = strlen(src);
-	i = 0;
-	if (dstsize == 0)
-		return (src_len);
-	while (src[i] != '\0' && i < dstsize - 1)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (src_len);
-}
-
-char	*get_next(char *dic)
-{
-	static char *back;
-	static int	flag = 0;
-	static int	i = 0;
-	int			k = 0;
-	int			len = 0;
-	char		*ret;
-	
-	if (flag == 0)
-	{
-		back = (char *)malloc(sizeof(char) * (strlen(dic) + 1));
-		ft_strlcpy(back, dic, strlen(dic) + 1);	
-	}
-	if (back[i] == '\0')
-		return (0);
-	while (back[i] != '\n' && back[i] != '\0')
-	{
-		i++;
-		len++;
-	}
-	ret = (char *)malloc(sizeof(char) * (len + 1));
+	ret = (char *)malloc(sizeof(char) * (i + 1));
 	if (ret == NULL)
 		return (0);
-	ft_strlcpy(ret, &back[i - len], len + 1);
-	while (back[i] == '\n' && back[i] != '\0')
-		i++;
-	flag++;
+	ret[i] = '\0';
+	ft_strlcpy(back, ret, i + 1);
 	return (ret);
 }
 
-int	main()
+char	*get_next_line(int fd)
 {
-	char	*dic = "42\nF\n\ngoo";
+	static char	*back;		//buffer back_up
+	char		*n_ptr;		//n_line point
+	char		*ret;		//result;
+	int			readsize;
 
-	printf("%s\n",	get_next(dic));
-	printf("%s\n",	get_next(dic));
-	printf("%s\n",	get_next(dic));
+	readsize = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	back = read_txt(back, &n_ptr, &readsize, fd);
+	if (back == NULL || *readsize == -1)
+	{
+		free(back);
+		back = 0;
+		return (0);
+	}
+	ret = ret_set(back, n_ptr);
+	return (ret);
+}
 
-	return (0);
+#include <stdio.h>
+#include <fcntl.h>
+
+int main()
+{
+	int		fd;
+	int		fd2;
+	char	*gnl;
+	char	*ret;
+
+	fd = open("read_error.txt", O_RDONLY);
+	fd2 = open("test.txt", O_RDONLY);
+
+	int i = 2;
+	printf("call num : %d\n", i);
+	//1
+	ret = get_next_line(fd);
+	printf("%s\n, p = %p\n", ret, ret);
+	free(ret);
+	ret = get_next_line(fd);
+	printf("%s\n p = %p\n", ret, ret);
+	free(ret);
+	//2
+	ret = get_next_line(fd);
+	printf("%s\n p = %p\n", ret, ret);
+	free(ret);
+	ret = get_next_line(fd);
+	printf("%s\n p = %p\n", ret, ret);
+	free(ret);
+	system("leaks a.out");
 }
