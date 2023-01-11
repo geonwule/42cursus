@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 19:36:50 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/10 14:20:22 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/01/11 19:18:40 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,25 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (s == NULL)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
 	return (i);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1, char *back)
 {
 	char	*s2;
 	int		i;
 
 	i = 0;
+	if (s1 == NULL)
+	{
+		free(back);
+		return (0);
+	}
 	s2 = (char *)malloc(sizeof(const char) * ft_strlen(s1) + 1);
 	if (s2 == 0)
 		return (0);
@@ -37,7 +44,50 @@ char	*ft_strdup(const char *s1)
 		i++;
 	}
 	s2[i] = '\0';
+	free(back);
 	return (s2);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	char	d;
+	int		i;
+
+	d = c;
+	i = 0;
+	if (s == NULL)
+		return (0);
+	if (d == '\0')
+	{
+		while (s[i] != '\0')
+			i++;
+		return ((char *)&s[i]);
+	}
+	while (s[i] != '\0')
+	{
+		if (s[i] == d)
+			return ((char *)&s[i]);
+		i++;
+	}
+	return (0);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	src_len;
+
+	src_len = ft_strlen(src);
+	i = 0;
+	if (dstsize == 0)
+		return (src_len);
+	while (src[i] != '\0' && i < dstsize - 1)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (src_len);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -61,39 +111,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[s1_len + s2_len] = '\0';
 	if (s1 != NULL)
 		free((void *)s1);
-	free((void *)s2);
 	return (str);
-}
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*new;
-
-	new = (t_list *)malloc(sizeof(t_list));
-	if (new == NULL)
-		return (0);
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*temp;
-	t_list	*last;
-
-	if (new == NULL)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	temp = *lst;
-	while (temp)
-	{
-		last = temp;
-		temp = temp->next;
-	}
-	last->next = new;
 }

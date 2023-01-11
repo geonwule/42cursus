@@ -15,23 +15,22 @@ int	main()
 	printf("call num : %d\n", i);
 	//1
 	ret = get_next_line(fd);
-	printf("%s\n", ret);
+	printf("%s1", ret);
 	free(ret);
-	ret = get_next_line(fd);
-	printf("%p\n", ret);
-	free(ret);
+
 	//2
 	ret = get_next_line(fd);
-	printf("%p\n", ret);
+	printf("%s2", ret);
 	free(ret);
-	//3
+/*	//3
 	ret = get_next_line(fd);
-	printf("%p", ret);
+	printf("%s3", ret);
 	free(ret);
-/*	//4
+	//4
 	ret = get_next_line(fd);
 	printf("%s", ret);
 	free(ret);
+	
 	//5
 	ret = get_next_line(fd);
 	printf("%s", ret);
@@ -40,5 +39,6 @@ int	main()
 	ret = get_next_line(fd);
 	printf("%s", ret);
 	free(ret);*/
-//	system("leaks a.out");
+	system("leaks a.out");
+	close(fd);
 }
