@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 14:44:44 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 11:07:03 by geonwule         ###   ########.fr       */
+/*   Created: 2023/01/12 11:08:22 by geonwule          #+#    #+#             */
+/*   Updated: 2023/01/12 12:40:52 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
 {
@@ -62,24 +62,71 @@ char	*ret_set(char *back)
 
 char	*get_next_line(int fd)
 {
-	static char	*back;
+	static char	*back[257];
 	char		*n_ptr;
 	char		*ret;
 	int			readsize;
 
 	readsize = -1;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 256)
 		return (0);
-	back = read_txt(back, &n_ptr, &readsize, fd);
-	if (back == NULL)
+	back[fd] = read_txt(back[fd], &n_ptr, &readsize, fd);
+	if (back[fd] == NULL)
 		return (0);
-	ret = ret_set(back);
+	ret = ret_set(back[fd]);
 	if (n_ptr != NULL)
-		back = ft_strdup(n_ptr + 1, back);
+		back[fd] = ft_strdup(n_ptr + 1, back[fd]);
 	else if (readsize == 0)
 	{
-		free(back);
-		back = 0;
+		free(back[fd]);
+		back[fd] = 0;
 	}
 	return (ret);
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+
+
+int	main()
+{
+	int		fd;
+	int		fd2;
+	char	*gnl;
+	char	*ret;
+
+	fd = open("test.txt", O_RDONLY);
+	fd2 = open("test2.txt", O_RDONLY);
+
+	int i = 2;
+	printf("call num : %d\n", i);
+	//1
+	ret = get_next_line(fd);
+	printf("%s", ret);
+	free(ret);
+
+	//2
+	ret = get_next_line(fd2);
+	printf("%s", ret);
+	free(ret);
+	//3
+	ret = get_next_line(fd);
+	printf("%s", ret);
+	free(ret);
+	//4
+	ret = get_next_line(fd2);
+	printf("%s", ret);
+	free(ret);
+
+	//5
+	ret = get_next_line(fd);
+	printf("%s", ret);
+	free(ret);
+	//6
+	ret = get_next_line(fd2);
+	printf("%s", ret);
+	free(ret);
+//	system("leaks a.out");
+	close(fd);
+	close(fd2);
 }

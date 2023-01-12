@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 14:44:44 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 11:07:03 by geonwule         ###   ########.fr       */
+/*   Created: 2023/01/12 11:08:22 by geonwule          #+#    #+#             */
+/*   Updated: 2023/01/12 11:08:28 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
 {

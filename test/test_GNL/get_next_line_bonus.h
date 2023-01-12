@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: geonwule <geonwule@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 19:37:12 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 11:07:12 by geonwule         ###   ########.fr       */
+/*   Created: 2023/01/12 11:07:59 by geonwule          #+#    #+#             */
+/*   Updated: 2023/01/12 12:25:45 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 50
 # endif
 
 typedef struct s_list

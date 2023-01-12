@@ -1,6 +1,6 @@
-HEAD = get_next_line.h
+HEAD = get_next_line_bonus.h
 
-SRCS = get_next_line.c get_next_line_utils.c
+SRCS = get_next_line_bonus.c get_next_line_utils_bonus.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -8,7 +8,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = get_next_line.a
+NAME = get_next_line_bonus.a
 
 all : ${NAME}
 

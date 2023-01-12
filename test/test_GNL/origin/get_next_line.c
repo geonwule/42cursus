@@ -6,13 +6,13 @@
 /*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:44:44 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 11:07:03 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:11:42 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
+static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd, int error)
 {
 	char		*buf;
 
@@ -23,7 +23,7 @@ static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
 	while ((*n_ptr == NULL) && (*readsize != 0))
 	{
 		*readsize = read(fd, buf, BUFFER_SIZE);
-		if (*readsize == -1)
+		if (*readsize == -1 || error == -1)
 		{
 			free(back);
 			free(buf);
@@ -60,7 +60,7 @@ char	*ret_set(char *back)
 	return (ret);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, int error)
 {
 	static char	*back;
 	char		*n_ptr;
@@ -70,7 +70,7 @@ char	*get_next_line(int fd)
 	readsize = -1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	back = read_txt(back, &n_ptr, &readsize, fd);
+	back = read_txt(back, &n_ptr, &readsize, fd, error);
 	if (back == NULL)
 		return (0);
 	ret = ret_set(back);

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: geonwule <geonwule@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 19:36:50 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 11:07:27 by geonwule         ###   ########.fr       */
+/*   Created: 2023/01/12 11:08:36 by geonwule          #+#    #+#             */
+/*   Updated: 2023/01/12 11:08:41 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
