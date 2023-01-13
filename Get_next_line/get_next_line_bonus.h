@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 11:07:59 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 11:08:04 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/01/12 14:31:08 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
 typedef struct s_list
 {
-	void			*content;
+	int				fd;
+	char			*content;
 	struct s_list	*next;
 }	t_list;
 
 char	*get_next_line(int fd);
 
-//get_next_line_utils.c
+//get_next_line_utils_bonus.c
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

@@ -6,13 +6,13 @@
 /*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 11:08:22 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/12 18:04:04 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:54:30 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-t_list	*read_txt(t_list *lst, char **n_ptr, int readsize)
+char	*read_txt(t_list *lst, char **n_ptr, int readsize)
 {
 	char		*buf;
 
@@ -25,7 +25,8 @@ t_list	*read_txt(t_list *lst, char **n_ptr, int readsize)
 		readsize = read(lst->fd, buf, BUFFER_SIZE);
 		if (readsize == -1)
 		{
-			free(lst->content);
+			if (lst->content != NULL)
+				free(lst->content);
 			free(buf);
 			return (0);
 		}
@@ -36,7 +37,7 @@ t_list	*read_txt(t_list *lst, char **n_ptr, int readsize)
 		*n_ptr = ft_strchr(lst->content, '\n');
 	}
 	free(buf);
-	return (lst);
+	return (lst->content);
 }
 
 char	*ret_set(char *back)
@@ -60,11 +61,11 @@ char	*ret_set(char *back)
 	return (ret);
 }
 
-
-t_list	*ft_lstnew(char *content, int fd, t_list **head)
+t_list	*ft_lstnew_add_back(char *content, int fd, t_list **head)
 {
 	t_list	*new;
 	t_list	*prev;
+	t_list	*temp;
 
 	new = (t_list *)malloc(sizeof(t_list));
 	if (new == NULL)
@@ -79,23 +80,38 @@ t_list	*ft_lstnew(char *content, int fd, t_list **head)
 		return (new);
 	}
 	while (*head)
+	{
+		temp = *head;
 		*head = (*head)->next;
-	*head = new;
+	}
+	temp->next = new;
 	*head = prev;
 	return (new);
 }
 
 void	lst_clear(t_list *lst, t_list **head, int fd)
 {
-	t_list	*temp1;
+	t_list	*head_prev;
+	t_list	*temp;
 
+	head_prev = *head;
+	temp = *head;
 	if (lst->content)
 		free(lst->content);
-	while ((*head)->fd != fd)
+	if ((*head)->fd == fd)
+	{
 		*head = (*head)->next;
-	temp1 = (*head)->next;
-	free(*head);
-	*head = temp1;
+		free(temp);
+		return ;
+	}
+	while (*head && (*head)->fd != fd)
+	{
+		temp = *head;
+		*head = (*head)->next;
+	}
+	temp->next = lst->next;
+	*head = head_prev;
+	free(lst);
 }
 
 char	*get_next_line(int fd)
@@ -106,16 +122,16 @@ char	*get_next_line(int fd)
 	char			*ret;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-			return (0);
+		return (0);
 	lst = head;
 	while (lst && lst->fd != fd)
 		lst = lst->next;
 	if (lst == NULL)
-		lst = ft_lstnew(NULL, fd, &head);
-	lst = read_txt(lst, &n_ptr, -1);
+		lst = ft_lstnew_add_back(NULL, fd, &head);
+	lst->content = read_txt(lst, &n_ptr, -1);
 	if (lst->content == NULL)
 	{
-		free(lst);
+		lst_clear(lst, &head, fd);
 		return (0);
 	}
 	ret = ret_set(lst->content);
@@ -124,51 +140,4 @@ char	*get_next_line(int fd)
 	else
 		lst_clear(lst, &head, fd);
 	return (ret);
-}
-
-#include <stdio.h>
-#include <fcntl.h>
-
-
-int	main()
-{
-	int		fd;
-	int		fd2;
-	char	*gnl;
-	char	*ret;
-
-	fd = open("test.txt", O_RDONLY);
-	fd2 = open("test2.txt", O_RDONLY);
-
-	int i = 2;
-	printf("call num : %d\n", i);
-	//1
-	ret = get_next_line(fd);
-	printf("%s", ret);
-	free(ret);
-
-	//2
-	ret = get_next_line(fd2);
-	printf("%s", ret);
-	free(ret);
-	//3
-	ret = get_next_line(fd);
-	printf("%s", ret);
-	free(ret);
-	//4
-	ret = get_next_line(fd2);
-	printf("%s", ret);
-	free(ret);
-
-	//5
-	ret = get_next_line(fd);
-	printf("%s", ret);
-	free(ret);
-	//6
-	ret = get_next_line(fd2);
-	printf("%s", ret);
-	free(ret);
-	system("leaks a.out");
-	close(fd);
-	close(fd2);
 }

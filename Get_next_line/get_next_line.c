@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
+static char	*read_txt(char *back, char **n_ptr, int readsize, int fd)
 {
 	char		*buf;
 
@@ -20,18 +20,19 @@ static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
 	if (buf == NULL)
 		return (0);
 	*n_ptr = ft_strchr(back, '\n');
-	while ((*n_ptr == NULL) && (*readsize != 0))
+	while ((*n_ptr == NULL) && (readsize != 0))
 	{
-		*readsize = read(fd, buf, BUFFER_SIZE);
-		if (*readsize == -1)
+		readsize = read(fd, buf, BUFFER_SIZE);
+		if (readsize == -1)
 		{
-			free(back);
+			if (back)
+				free(back);
 			free(buf);
 			return (0);
 		}
-		if (*readsize == 0)
+		if (readsize == 0)
 			break ;
-		buf[*readsize] = '\0';
+		buf[readsize] = '\0';
 		back = ft_strjoin(back, buf);
 		*n_ptr = ft_strchr(back, '\n');
 	}
@@ -39,9 +40,9 @@ static char	*read_txt(char *back, char **n_ptr, int *readsize, int fd)
 	return (back);
 }
 
-char	*ret_set(char *back)
+char	*line_set(char *back)
 {
-	char	*ret;
+	char	*line;
 	int		i;
 
 	i = 0;
@@ -53,33 +54,31 @@ char	*ret_set(char *back)
 			break ;
 		i++;
 	}
-	ret = (char *)malloc(sizeof(char) * (i + 2));
-	if (ret == NULL)
+	line = (char *)malloc(sizeof(char) * (i + 2));
+	if (line == NULL)
 		return (0);
-	ft_strlcpy(ret, back, i + 2);
-	return (ret);
+	ft_strlcpy(line, back, i + 2);
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*back;
 	char		*n_ptr;
-	char		*ret;
-	int			readsize;
+	char		*line;
 
-	readsize = -1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	back = read_txt(back, &n_ptr, &readsize, fd);
+	back = read_txt(back, &n_ptr, -1, fd);
 	if (back == NULL)
 		return (0);
-	ret = ret_set(back);
+	line = line_set(back);
 	if (n_ptr != NULL)
 		back = ft_strdup(n_ptr + 1, back);
-	else if (readsize == 0)
+	else
 	{
 		free(back);
 		back = 0;
 	}
-	return (ret);
+	return (line);
 }
