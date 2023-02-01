@@ -24,23 +24,23 @@ NAME = libft.a
 all : ${NAME}
 
 %.o : %.c
-	${CC} ${CFLAGS} -c $< -o $@ -I ${HEAD}
+	@${CC} ${CFLAGS} -c $< -o $@ -I ${HEAD}
 
 ${NAME} : ${OBJS}
-	ar -rc ${NAME} $^
-	rm -f bonus
-	touch all
+	@ar -rc ${NAME} $^
+	@rm -f bonus
+	@touch all
 
 bonus : ${B_OBJS}
-	ar -rc ${NAME} $^
-	rm -f all
-	touch bonus
+	@ar -rc ${NAME} $^
+	@rm -f all
+	@touch bonus
 
 clean :
-	rm -f ${OBJS} ${B_OBJS} all bonus
+	@rm -f ${OBJS} ${B_OBJS} all bonus
 
 fclean : clean
-	rm -f ${NAME}
+	@rm -f ${NAME}
 
 re :
 	${MAKE} fclean

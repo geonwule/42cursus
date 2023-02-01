@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cspdiuxX.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: geonwule <geonwule@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 19:24:22 by geonwule          #+#    #+#             */
-/*   Updated: 2023/01/02 15:29:21 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/01/16 17:27:19 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	out_diu(const char *format, int i, va_list ap, int *ret)
 	free(y);
 }
 
-void	printp(unsigned long k, char	*y, int *ret)
+static void	printp(unsigned long k, char	*y, int *ret)
 {
 	if (k == 0)
 	{
@@ -73,7 +73,7 @@ void	out_x2xp(const char *format, int i, va_list ap, int *ret)
 	}
 }
 
-void	out_s(va_list ap, int *ret)
+static void	out_s(va_list ap, int *ret)
 {
 	char	*s;
 

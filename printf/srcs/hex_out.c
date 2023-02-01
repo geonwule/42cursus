@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hex_out.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: geonwule <geonwule@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: geonwule <geonwule@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 19:24:36 by geonwule          #+#    #+#             */
-/*   Updated: 2022/12/28 19:27:14 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:33:25 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ret_len_cnt(unsigned int i)
+static int	ret_len_cnt(unsigned int i)
 {
 	int	len;
 
