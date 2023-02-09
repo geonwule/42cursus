@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "mlx.h": "c",
-        "mlx_int.h": "c"
+        "mlx_int.h": "c",
+        "so_long.h": "c",
+        "get_next_line.h": "c"
     }
 }
