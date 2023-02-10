@@ -1,5 +1,12 @@
 #include "./so_long.h"
 
+int	exit_game(t_vars *vars)
+{
+	write(1, "Player has exited the game\n", 27);
+	mlx_destroy_window(vars->mlx, vars->win);
+	exit(0);
+}
+
 // cc -L./mini_libx/minilibx-linux -lmlx -framework OpenGL -framework AppKit
 int main(int ac, char **av)
 {
@@ -15,6 +22,7 @@ int main(int ac, char **av)
 	img_xpm_set(vars);
 	map_set(vars, 2, vars->c_collect);
 	mlx_key_hook(vars->win, keyboard_input, vars);
+	mlx_hook(vars->win, 17, 0, exit_game, vars);
 	// mlx_key_hook(vars->win, close, vars);
 	// mlx_hook(vars->win, 17, 0, exit_game, vars);
 	mlx_loop(vars->mlx);
