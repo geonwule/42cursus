@@ -1,4 +1,4 @@
-#include "./so_long.h"
+#include "so_long.h"
 
 void	move_counting(t_vars *vars)
 {
@@ -11,17 +11,31 @@ void	move_counting(t_vars *vars)
 	free (c);
 }
 
-void collect_check(int *c, char *map)
+void contain_check(t_vars *vars, char *map)
 {
-	int i = 0;
-	int j = 0;
+	int i;
+	int collect;
+	int starting;
+	int exit;
+
+	i = 0;
+	collect = 0;
+	starting = 0;
+	exit = 0;
+	vars->contain = 0;
 	while (map[i])
 	{
 		if (map[i] == 'C')
-			j++;
+			collect++;
+		if (map[i] == 'E')
+			exit++;
+		if (map[i] == 'P')
+			starting++;
 		i++;
 	}
-	*c = j;
+	vars->c_collect = collect;
+	if (starting == 1 && exit == 1 && collect > 0)
+		vars->contain = 1;
 }
 
 void img_xpm_set(t_vars *vars)
@@ -41,6 +55,16 @@ void img_xpm_set(t_vars *vars)
 	vars->monster = mlx_xpm_file_to_image(vars->mlx, MONSTER, &x, &y);
 }
 
+int	ft_strlen_nonl(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != 0 && str[i] != '\n')
+		i++;
+	return (i);
+}
+
 void map_read(char *map_name, t_vars *vars)
 {
 	char *line;
@@ -49,16 +73,19 @@ void map_read(char *map_name, t_vars *vars)
 	line = get_next_line(fd);
 	vars->c_collect = 0;
 	vars->height = 0;
+	vars->width_e = 1;
 	vars->width = ft_strlen(line) - 1;
 	while (line)
 	{
 		vars->height++;
 		map = ft_strjoin_so(map, line);
+		free (line);
 		line = get_next_line(fd);
+		if (line && vars->width != (ft_strlen_nonl(line)))
+			vars->width_e = -1;
 	}
 	vars->map = map;
-	// printf("map = %s\n", vars->map);
-	collect_check(&vars->c_collect, vars->map);
+	contain_check(vars, vars->map);
 	vars->c_move = 0;
 	close(fd);
 }

@@ -1,13 +1,13 @@
-#include "./so_long.h"
+#include "so_long.h"
 
 void	end_game(t_vars *vars, int win_or_fail)
 {
-	if (vars->c_move < 0)	// free_need
-		return ;
 	if (win_or_fail)
 		write(1, "Oh my god... fail...\n", 21);
 	else
 		write(1, "Success!! game end!!\n", 21);
+	free(vars->map);
+	free(vars);
 	exit(0);
 }
 
@@ -31,13 +31,11 @@ static void	player_put_image(t_vars *vars, int width, int height, int key)
 		mlx_put_image_to_window(vars->mlx, vars->win, vars->chobo_right, width*50, height*50);
 }
 
-void map_set(t_vars *vars, int key_code, int c_collect)
+void map_set(t_vars *vars, int key_code)//, int c_collect)
 {
 	int height = 0;
 	int width;
 
-	if (c_collect < 0)	// c_collect where?
-		return ;
 	while (height < vars->height)
 	{
 		width = 0;

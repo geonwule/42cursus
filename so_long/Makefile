@@ -1,10 +1,16 @@
 HEAD = includes
 
 SRCS = srcs/get_next_line.c srcs/get_next_line_utils.c srcs/keyboard_input.c srcs/main.c\
-	   srcs/map_init.c srcs/map_set.c srcs/so_long_util.c\
+	   srcs/map_init.c srcs/map_set.c srcs/so_long_util.c srcs/map_error.c\
 
 
 OBJS = ${SRCS:.c=.o}
+
+MLXNAME = mlx
+
+MLXDIR = ./mlx
+
+MLXFLAGS = -framework OpenGL -framework AppKit
 
 CC = cc
 
@@ -29,7 +35,7 @@ all : ${NAME}
 	@${CC} ${CFLAGS} -c $< -o $@ -I ${HEAD}
 
 ${NAME} : ${OBJS}
-	@${CC} -L./mini_libx/minilibx-linux -lmlx -framework OpenGL -framework AppKit -o ${NAME} $^
+	@${CC} -l${MLXNAME} ${MLXFLAGS} -o ${NAME} $^
 	@echo "$(GREEN)so_long compiled!$(DEF_COLOR)"
 
 clean :

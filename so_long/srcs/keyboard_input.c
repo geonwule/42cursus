@@ -1,4 +1,4 @@
-#include "./so_long.h"
+#include "so_long.h"
 
 static void input_w(t_vars *vars)
 {
@@ -21,7 +21,7 @@ static void input_w(t_vars *vars)
 	{
 		vars->map[i - vars->width] = 'P';
 		vars->map[i] = '0';
-		map_set(vars, W, vars->c_collect);
+		map_set(vars, W);//, vars->c_collect);
 		move_counting(vars);
 	}
 }
@@ -47,7 +47,7 @@ static void	input_a(t_vars *vars)
 	{
 		vars->map[i - 1] = 'P';
 		vars->map[i] = '0';
-		map_set(vars, A, vars->c_collect);
+		map_set(vars, A);//, vars->c_collect);
 		move_counting(vars);
 	}
 }
@@ -73,7 +73,7 @@ static void	input_s(t_vars *vars)
 	{
 		vars->map[i + vars->width] = 'P';
 		vars->map[i] = '0';
-		map_set(vars, S, vars->c_collect);
+		map_set(vars, S);//, vars->c_collect);, vars->c_collect);
 		move_counting(vars);
 	}
 }
@@ -99,7 +99,7 @@ static void	input_d(t_vars *vars)
 	{
 		vars->map[i + 1] = 'P';
 		vars->map[i] = '0';
-		map_set(vars, D, vars->c_collect);
+		map_set(vars, D);//, vars->c_collect);
 		move_counting(vars);
 	}
 }

@@ -1,4 +1,4 @@
-#include "./so_long.h"
+#include "so_long.h"
 
 char *ft_strjoin_so(char const *s1, char const *s2)
 {
