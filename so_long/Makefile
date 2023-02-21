@@ -1,7 +1,7 @@
 HEAD = includes
 
 SRCS = srcs/get_next_line.c srcs/get_next_line_utils.c srcs/keyboard_input.c srcs/main.c\
-	   srcs/map_init.c srcs/map_set.c srcs/so_long_util.c srcs/map_error.c\
+	   srcs/map_init.c srcs/map_set.c srcs/so_long_util.c srcs/map_error.c srcs/valid_dfs.c\
 
 
 OBJS = ${SRCS:.c=.o}
@@ -38,12 +38,17 @@ ${NAME} : ${OBJS}
 	@${CC} -l${MLXNAME} ${MLXFLAGS} -o ${NAME} $^
 	@echo "$(GREEN)so_long compiled!$(DEF_COLOR)"
 
+debug : ${OBJS}
+	@cc -g3 -fsanitize=address -l${MLXNAME} ${MLXFLAGS} -o debug $^
+	@echo "$(GREEN)debug compiled!$(DEF_COLOR)"
+
 clean :
 	@rm -f ${OBJS}
 	@echo "$(BLUE)so_long object files cleaned!$(DEF_COLOR)"
 
 fclean : clean
 	@rm -f ${NAME}
+	@rm -f debug
 	@echo "$(YELLOW)so_long library files cleaned!$(DEF_COLOR)"
 
 re :
@@ -51,4 +56,4 @@ re :
 	${MAKE} all
 	@echo "$(MAGENTA)Cleaned and rebuilt everything for so_long!$(DEF_COLOR)"
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean debug re

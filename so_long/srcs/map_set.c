@@ -7,6 +7,7 @@ void	end_game(t_vars *vars, int win_or_fail)
 	else
 		write(1, "Success!! game end!!\n", 21);
 	free(vars->map);
+	free(vars->map2);
 	free(vars);
 	exit(0);
 }

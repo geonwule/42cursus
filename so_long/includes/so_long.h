@@ -49,6 +49,9 @@ typedef struct s_vars
     void *monster;
 } t_vars;
 
+//main
+void var_free(t_vars *vars);
+
 // map_error
 int min_map_contain(t_vars *vars);
 int rectangular_check(t_vars *vars);

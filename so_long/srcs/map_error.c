@@ -5,7 +5,7 @@ int min_map_contain(t_vars *vars)
 {
     if (vars->contain != 1)
     {
-        write(2, "Map error : Not enough minimum map consist\n", 43);
+        write(2, "Map error : Not enough or overflow map consist\n", 47);
         return (1);
     }
     return (0);
@@ -49,73 +49,13 @@ int surrounded_wall(t_vars *vars)
     return (0);
 }
 
-// up, down, left, right -> dfs
-static int dfs(t_vars *vars, int p, int c, int e, int *c_cnt, int step, int before)
-{
-    char *map = vars->map;
-    int i;
-
-    if (*c_cnt == 0 && map[p] == 'E') // valid
-        return (1);
-    i = 0;
-    while (*c_cnt > 0)
-    {
-        if (map[p + step] == 'C')
-        {
-            *c_cnt -= 1;
-        }
-        if (map[p + step] == '1')
-            return (0);
-        if (map[p + step] == 'E' && *c_cnt != 0)
-            return (0);
-        if (before != 2 && dfs(vars, p, c, e, c_cnt, step - vars->width, 1)) // up
-            return (1);
-        if (before != 1 && dfs(vars, p, c, e, c_cnt, step + vars->width, 2)) // down
-            return (1);
-        if (before != 4 && dfs(vars, p, c, e, c_cnt, step - 1, 3)) // left
-            return (1);
-        if (before != 3 && dfs(vars, p, c, e, c_cnt, step + 1, 4)) // right
-            return (1);
-        i++;
-    }
-    return (0);
-}
-
-// char *map_copy(t_vars *vars)
+// for (int i = 0; i < (int)ft_strlen(map); i++)
 // {
-//     char *map2;
-
-//     map2 = (char *)malloc(sizeof(char) * (ft_strlen(vars->map) + 1));
-//     if (map2 == NULL)
-//         return (0);
-//     ft_strlcpy(map2, vars->map, ft_strlen(vars->map) + 1);
-//     return (map2);
+//     printf("%c", map[i]);
+//     if ((i == 12 && i != 13) || (i - 12) % 13 == 0)
+//         printf("\n");
 // }
-
-// 'P' -> 'C' -> 'E'
-int valid_path(t_vars *vars)
-{
-    int i;
-    int p;
-    int c;
-    int c_cnt = vars->c_collect;
-    int e;
-
-    // vars->map2 = map_copy(vars);
-    i = 0;
-    while (vars->map[i] != '\0')
-    {
-        if (vars->map[i] == 'P')
-            p = i;
-        else if (vars->map[i] == 'E')
-            e = i;
-        i++;
-    }
-    c = 0; // modify
-    if (!dfs(vars, p, c, e, &c_cnt, 0, 0))
-        return (1);
-    return (0);
-}
+// printf("\n");
 
 // int parsing_able(t_vars *vars)
 // {
