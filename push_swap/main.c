@@ -3,10 +3,10 @@
 
 typedef struct s_list
 {
-    void            *content;
-    long long       idx;
-    struct s_list   *next;
-    struct s_list   *prev;
+    void *content;
+    long long idx;
+    struct s_list *next;
+    struct s_list *prev;
 } t_list;
 
 // t_list *node_init(void)
@@ -75,6 +75,7 @@ void ft_lstadd_front(t_list **lst, t_list *new)
     if (*lst == NULL)
     {
         *lst = new;
+        (*lst)->prev = NULL;
         return;
     }
     temp->prev = new;
@@ -103,10 +104,10 @@ void print_node_a(t_list *node_a)
     }
 }
 
-t_list  *ft_lstmid(t_list *left, t_list *right)
+t_list *ft_lstmid(t_list *left, t_list *right)
 {
     long long mid_idx;
-    t_list  *mid;
+    t_list *mid;
 
     mid_idx = (left->idx + right->idx) / 2;
     while (left->idx < mid_idx)
@@ -115,33 +116,75 @@ t_list  *ft_lstmid(t_list *left, t_list *right)
     return (mid);
 }
 
-void quick_sort(t_list **node_a, t_list **node_b, t_list **order, long long ac)
+void ft_sa(t_list **l, t_list **r)
 {
-    t_list *left = *node_a;
-    t_list *right = ft_lstlast(*node_a);
+    t_list *temp;
+    t_list *left;
+    t_list *right;
+
+    left = *l;
+    right = *r;
+    temp = (t_list *)malloc(sizeof(t_list));
+    if (temp == NULL)
+        return;
+    temp->content = left->content;
+    temp->idx = left->idx;
+    left->content = right->content;
+    left->idx = right->idx;
+    right->content = temp->content;
+    right->idx = temp->idx;
+    free(temp);
+}
+
+void ft_pb(t_list **l_node, t_list **left, int *pb, t_list **node_b)
+{
+    t_list *temp;
+
+    temp = (*l_node);
+    while (temp->idx < (*left)->idx)
+    {
+        ft_lstadd_front(node_b, temp);
+        (*node_b)->next = NULL;
+        temp = temp->next;
+    }
+    del_front(l_)
+}
+
+void quick_sort(t_list **l_node, t_list **r_node, t_list **node_b, t_list **order, long long ac)
+{
+    t_list *left = *l_node;
+    t_list *right = *r_node; // ft_lstlast(*node_a);
     t_list *pivot = ft_lstmid(left, right);
 
-    while (left->idx <= right->idx)
+    while (left->idx <= right->idx &&
+           right->idx - left->idx <= 2)
     {
         while (left->content < pivot->content)
             left = left->next;
         while (right->content > pivot->content)
             right = right->prev;
-        if (left->idx <= right->idx)
+        if (left->idx == 0 && right->idx == 1)
         {
-            ft_swap(&arr[left], &arr[right]);
+            ft_sa(&left, &right);
             left = left->next;
             right = right->prev;
+            break;
         }
     }
-    if ((*node_a)->idx < right->idx)
+    int pb = 0;
+    if ((*l_node)->idx < left->idx)
     {
-        ft_qsort(node_a, L, right);
+        ft_pb(l_node, left, &pb, node_b);
     }
-    if (ft_lstlast(*node_a)->idx > left->idx)
-    {
-        ft_qsort(arr, left, R);
-    }
+    quick_sort(&left, r_node, node_b, order, ac);
+    // if ((*l_node)->idx < right->idx)
+    // {
+    //     ft_qsort(l_node, right);
+    // }
+    // if ((*r_node)->idx > left->idx)
+    // {
+    //     ft_qsort(left, r_node);
+    // }
 }
 
 void ft_qsort(int *arr, int L, int R)
