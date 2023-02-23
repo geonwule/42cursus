@@ -3,8 +3,10 @@
 
 typedef struct s_list
 {
-    void    *content;
-    struct s_list *next;
+    void            *content;
+    long long       idx;
+    struct s_list   *next;
+    struct s_list   *prev;
 } t_list;
 
 // t_list *node_init(void)
@@ -20,7 +22,7 @@ typedef struct s_list
 //     return (new);
 // }
 
-t_list *ft_lstnew(void *content)
+t_list *ft_lstnew(void *content, long long idx)
 {
     t_list *new;
 
@@ -28,7 +30,9 @@ t_list *ft_lstnew(void *content)
     if (new == NULL)
         return (0);
     new->content = content;
+    new->idx = idx;
     new->next = NULL;
+    new->prev = NULL;
     return (new);
 }
 
@@ -58,6 +62,7 @@ void ft_lstadd_back(t_list **lst, t_list *new)
         return;
     }
     temp = *lst;
+    new->prev = ft_lstlast(temp);
     ft_lstlast(temp)->next = new;
 }
 
@@ -72,6 +77,7 @@ void ft_lstadd_front(t_list **lst, t_list *new)
         *lst = new;
         return;
     }
+    temp->prev = new;
     new->next = temp;
     *lst = new;
 }
@@ -80,13 +86,11 @@ void ft_lstadd_front(t_list **lst, t_list *new)
 void node_a_init(t_list **node_a, char **av)
 {
     void *temp;
-    int a = 99;
 
-    for (int i = 1; av[i] != NULL; i++)
+    for (long long i = 1; av[i] != NULL; i++)
     {
         temp = ((void *)atoi(av[i]));
-        //temp = (void *)a;
-        ft_lstadd_back(node_a, ft_lstnew(temp));
+        ft_lstadd_back(node_a, ft_lstnew(temp, i));
     }
 }
 
@@ -99,16 +103,45 @@ void print_node_a(t_list *node_a)
     }
 }
 
-void    quick_sort(t_list **node_a, t_list **node_b, t_list **order)
+t_list  *ft_lstmid(t_list *left, t_list *right)
 {
-    if ()
-        sa;
-    if ()
-        sb;
-    if ()
-        pa;
-    if ()
-        pb
+    long long mid_idx;
+    t_list  *mid;
+
+    mid_idx = (left->idx + right->idx) / 2;
+    while (left->idx < mid_idx)
+        left = left->next;
+    mid = left;
+    return (mid);
+}
+
+void quick_sort(t_list **node_a, t_list **node_b, t_list **order, long long ac)
+{
+    t_list *left = *node_a;
+    t_list *right = ft_lstlast(*node_a);
+    t_list *pivot = ft_lstmid(left, right);
+
+    while (left->idx <= right->idx)
+    {
+        while (left->content < pivot->content)
+            left = left->next;
+        while (right->content > pivot->content)
+            right = right->prev;
+        if (left->idx <= right->idx)
+        {
+            ft_swap(&arr[left], &arr[right]);
+            left = left->next;
+            right = right->prev;
+        }
+    }
+    if ((*node_a)->idx < right->idx)
+    {
+        ft_qsort(node_a, L, right);
+    }
+    if (ft_lstlast(*node_a)->idx > left->idx)
+    {
+        ft_qsort(arr, left, R);
+    }
 }
 
 void ft_qsort(int *arr, int L, int R)
@@ -138,7 +171,7 @@ void ft_qsort(int *arr, int L, int R)
     }
 }
 
-int main(int ac, char **av)
+int main(long long ac, char **av)
 {
     t_list *node_a;
     t_list *node_b;
@@ -147,6 +180,6 @@ int main(int ac, char **av)
     node_b = NULL;
 
     node_a_init(&node_a, av);
-    //quick_sort(&node_a, &node_b, &order);
+    quick_sort(&node_a, &node_b, &order, ac);
     print_node_a(node_a);
 }
