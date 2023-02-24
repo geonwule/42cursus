@@ -1,21 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-// order
-int ft_sa(t_list *node, t_list **order, int flag);
-int ft_sb(t_list *node, t_list **order, int flag);
-void ft_ss(t_list *node_a, t_list *node_b, t_list **order);
-int ft_pa(t_list **node_a, t_list **node_b, t_list **order);
-int ft_pb(t_list **node_a, t_list **node_b, t_list **order);
-void ft_ra(t_list **node, t_list **order, int flag);
-void ft_rb(t_list **node, t_list **order, int flag);
-void ft_rr(t_list **node_a, t_list **node_b, t_list **order);
-void ft_rra(t_list **node, t_list **order, int flag);
-void ft_rrb(t_list **node, t_list **order, int flag);
-void ft_rrr(t_list **node_a, t_list **node_b, t_list **order);
-
-// linked list
-
 typedef struct s_list
 {
     void *content;
@@ -24,134 +9,18 @@ typedef struct s_list
     struct s_list *prev;
 } t_list;
 
-t_list *ft_lstnew(void *content, long long idx);
-static t_list *ft_lstlast(t_list *lst);
-void ft_lstadd_back(t_list **lst, t_list *new);
-void ft_lstadd_front(t_list **lst, t_list *new);
+// t_list *node_init(void)
+// {
+//     t_list *new;
 
-// temporary stdio printf
-#include <stdio.h>
-
-// sort_utils
-void node_a_init(t_list **node_a, char **av);
-void print_node_a(t_list *node_a);
-t_list *ft_lstmid(t_list *left, t_list *right);
-void print_order(t_list *order);
-void mal_free(t_list *node);
-
-void quick_sort(t_list **l_node, t_list **r_node, t_list **node_b, t_list **order, long long ac)
-{
-    t_list *left = *l_node;
-    t_list *right = *r_node; // ft_lstlast(*node_a);
-    t_list *pivot = ft_lstmid(left, right);
-
-    while (left->idx <= right->idx &&
-           right->idx - left->idx <= 2)
-    {
-        while (left->content < pivot->content)
-            left = left->next;
-        while (right->content > pivot->content)
-            right = right->prev;
-        if (left->idx == 0 && right->idx == 1)
-        {
-            ft_sa(&left, &right);
-            left = left->next;
-            right = right->prev;
-            break;
-        }
-    }
-    int pb = 0;
-    if ((*l_node)->idx < left->idx)
-    {
-        ft_pb(l_node, left, &pb, node_b);
-    }
-    quick_sort(&left, r_node, node_b, order, ac);
-    // if ((*l_node)->idx < right->idx)
-    // {
-    //     ft_qsort(l_node, right);
-    // }
-    // if ((*r_node)->idx > left->idx)
-    // {
-    //     ft_qsort(left, r_node);
-    // }
-}
-
-int main(long long ac, char **av)
-{
-    t_list *node_a;
-    t_list *node_a_last;
-    t_list *node_b;
-    t_list *order;
-    node_a = NULL; // node_init();
-    node_b = NULL;
-    order = NULL;
-
-    node_a_init(&node_a, av);
-    node_a_last = ft_lstlast(node_a);
-    quick_sort(&node_a, &node_a_last, &node_b, &order, ac);
-    print_node_a(node_a);
-    print_order(order);
-    mal_free(node_a);
-    mal_free(node_b);
-    mal_free(order);
-}
-
-// sort_ utils
-
-void node_a_init(t_list **node_a, char **av)
-{
-    void *temp;
-
-    for (long long i = 1; av[i] != NULL; i++)
-    {
-        temp = ((void *)atoi(av[i]));
-        ft_lstadd_back(node_a, ft_lstnew(temp, i));
-    }
-}
-
-void print_node_a(t_list *node_a)
-{
-    while (node_a)
-    {
-        printf("%lld\n", (long long)node_a->content);
-        node_a = node_a->next;
-    }
-}
-
-t_list *ft_lstmid(t_list *left, t_list *right)
-{
-    long long mid_idx;
-    t_list *mid;
-
-    mid_idx = (left->idx + right->idx) / 2;
-    while (left->idx < mid_idx)
-        left = left->next;
-    mid = left;
-    return (mid);
-}
-
-void print_order(t_list *order)
-{
-    while (order)
-    {
-        ft_printf("%s\n", order->content);
-        order = order->next;
-    }
-}
-
-void mal_free(t_list *node)
-{
-    t_list *temp;
-
-    while (node)
-    {
-        temp = node;
-        node = node->next;
-        free(temp);
-    }
-}
-
-// linked list
+//     new = (t_list *)malloc(sizeof(t_list));
+//     if (new == NULL)
+//         return (0);
+//     new->arg = 0;
+//     new->head = 0;
+//     new->next = NULL;
+//     return (new);
+// }
 
 t_list *ft_lstnew(void *content, long long idx)
 {
@@ -213,8 +82,6 @@ void ft_lstadd_front(t_list **lst, t_list *new)
     new->next = temp;
     *lst = new;
 }
-
-// order
 
 int ft_sa(t_list *node, t_list **order, int flag)
 {
@@ -359,4 +226,64 @@ void ft_rrr(t_list **node_a, t_list **node_b, t_list **order)
     ft_rra(node_a, order, 0);
     ft_rrb(node_b, order, 0);
     ft_lstadd_back(order, ft_lstnew("rrr", 0));
+}
+
+#include <stdio.h>
+
+void print_node(t_list *s)
+{
+    while (s)
+    {
+        printf("%s\n", (char *)s->content);
+        s = s->next;
+    }
+}
+
+void mal_free(t_list *node)
+{
+    t_list *temp;
+
+    while (node)
+    {
+        temp = node;
+        node = node->next;
+        free(temp);
+    }
+}
+
+int main()
+{
+    t_list *a = NULL;
+    t_list *b = NULL;
+    t_list *order = NULL;
+
+    ft_lstadd_back(&a, ft_lstnew("1", 0));
+    ft_lstadd_back(&a, ft_lstnew("2", 0));
+    ft_lstadd_back(&a, ft_lstnew("3", 0));
+    ft_lstadd_back(&a, ft_lstnew("4", 0));
+    ft_lstadd_back(&a, ft_lstnew("5", 0));
+    ft_lstadd_back(&a, ft_lstnew("6", 0));
+    ft_lstadd_back(&a, ft_lstnew("7", 0));
+    ft_lstadd_back(&a, ft_lstnew("8", 0));
+    ft_pb(&a, &b, &order);
+    ft_pb(&a, &b, &order);
+    ft_pb(&a, &b, &order);
+    ft_pb(&a, &b, &order);
+    ft_ss(a, b, &order);
+    // ft_pa(&a, &b, &order);
+    // ft_pb(&a, &b, &order);
+    // ft_ss(a, b, &order);
+    // ft_rrr(&a, &b, &order);
+    // ft_rra(&a, &order, 1);
+    // ft_rrb(&b, &order, 1);
+    printf("----a-----\n");
+    print_node(a);
+    printf("----b-----\n");
+    print_node(b);
+    printf("----order-----\n");
+    print_node(order);
+    printf("\n");
+    mal_free(a);
+    mal_free(b);
+    mal_free(order);
 }
