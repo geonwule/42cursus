@@ -39,41 +39,74 @@ t_list *ft_lstmid(t_list *left, t_list *right);
 void print_order(t_list *order);
 void mal_free(t_list *node);
 
-void quick_sort(t_list **l_node, t_list **r_node, t_list **node_b, t_list **order, long long ac)
-{
-    t_list *left = *l_node;
-    t_list *right = *r_node; // ft_lstlast(*node_a);
-    t_list *pivot = ft_lstmid(left, right);
+// void quick_sort(t_list **l_node, t_list **r_node, t_list **node_b, t_list **order, long long ac)
+// {
+//     t_list *left = *l_node;
+//     t_list *right = *r_node; // ft_lstlast(*node_a);
+//     t_list *pivot = ft_lstmid(left, right);
 
-    while (left->idx <= right->idx &&
-           right->idx - left->idx <= 2)
+//     while (left->idx <= right->idx &&
+//            right->idx - left->idx <= 2)
+//     {
+//         while (left->content < pivot->content)
+//             left = left->next;
+//         while (right->content > pivot->content)
+//             right = right->prev;
+//         if (left->idx == 0 && right->idx == 1)
+//         {
+//             ft_sa(&left, &right);
+//             left = left->next;
+//             right = right->prev;
+//             break;
+//         }
+//     }
+//     int pb = 0;
+//     if ((*l_node)->idx < left->idx)
+//     {
+//         ft_pb(l_node, left, &pb, node_b);
+//     }
+//     quick_sort(&left, r_node, node_b, order, ac);
+//     // if ((*l_node)->idx < right->idx)
+//     // {
+//     //     ft_qsort(l_node, right);
+//     // }
+//     // if ((*r_node)->idx > left->idx)
+//     // {
+//     //     ft_qsort(left, r_node);
+//     // }
+// }
+
+long long ft_lstsize(t_list *node)
+{
+    long long size;
+
+    size = 0;
+    while (node)
     {
-        while (left->content < pivot->content)
-            left = left->next;
-        while (right->content > pivot->content)
-            right = right->prev;
-        if (left->idx == 0 && right->idx == 1)
-        {
-            ft_sa(&left, &right);
-            left = left->next;
-            right = right->prev;
-            break;
-        }
+        size++;
+        node = node->next;
     }
-    int pb = 0;
-    if ((*l_node)->idx < left->idx)
+    return (size);
+}
+
+void    my_sort(t_list *node)
+{
+    long long pivot;
+    long long node_size = ft_lstsize(node);
+
+    int i = 0;
+    while (i < node_size)
     {
-        ft_pb(l_node, left, &pb, node_b);
+        if ((long long)node->content >= pivot)
+            ft_ra(node, order, 0);
+        else
+            ft_pb(node, node_b, order);
+        i++;
     }
-    quick_sort(&left, r_node, node_b, order, ac);
-    // if ((*l_node)->idx < right->idx)
-    // {
-    //     ft_qsort(l_node, right);
-    // }
-    // if ((*r_node)->idx > left->idx)
-    // {
-    //     ft_qsort(left, r_node);
-    // }
+
+    
+    if (node_b)
+        b_to_a();
 }
 
 int main(long long ac, char **av)
@@ -88,7 +121,8 @@ int main(long long ac, char **av)
 
     node_a_init(&node_a, av);
     node_a_last = ft_lstlast(node_a);
-    quick_sort(&node_a, &node_a_last, &node_b, &order, ac);
+    my_sort(&node_a, &node_b, &order);
+    // quick_sort(&node_a, &node_a_last, &node_b, &order, ac);
     print_node_a(node_a);
     print_order(order);
     mal_free(node_a);
@@ -104,7 +138,7 @@ void node_a_init(t_list **node_a, char **av)
 
     for (long long i = 1; av[i] != NULL; i++)
     {
-        temp = ((void *)atoi(av[i]));
+        temp = ((void *)atoi(av[i]));   // modify a_to_llong
         ft_lstadd_back(node_a, ft_lstnew(temp, i));
     }
 }
