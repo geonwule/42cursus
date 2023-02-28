@@ -251,6 +251,12 @@ void mal_free(t_list *node)
     }
 }
 
+// int main()
+// {
+//     t_list *head = ft_lstnew((void *)123999, 123);
+
+//     printf("%lld\n", (long long)head->content);
+//}
 int main()
 {
     t_list *a = NULL;
@@ -270,7 +276,9 @@ int main()
     ft_pb(&a, &b, &order);
     ft_pb(&a, &b, &order);
     ft_ss(a, b, &order);
-    // ft_pa(&a, &b, &order);
+    ft_pa(&a, &b, &order);
+    ft_pa(&a, &b, &order);
+    ft_pa(&a, &b, &order);
     // ft_pb(&a, &b, &order);
     // ft_ss(a, b, &order);
     // ft_rrr(&a, &b, &order);

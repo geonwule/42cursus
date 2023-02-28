@@ -10,6 +10,11 @@ HOW TO USE ?
 
 
 
+-1. push_swap 내가 겪은 문제들
+ 1) quik sort로 구현하고 싶으나
+ 내가 아는 배열에서의 quiksort를 
+ 리스트에서 제한된 명령어 sa,sb,pa,pb 등으로 하려니
+ 막막함..
 
 1. push_swap 구상
 main함수 실행 시, argc argv를 통해 sort할 숫자 입력
