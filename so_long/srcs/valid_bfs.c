@@ -1,10 +1,33 @@
 #include "so_long.h"
 
+static int one_step_go(t_vars *vars, int *c_cnt, int step, int *e)
+{
+    if (dfs(vars, c_cnt, step - vars->width, e)) // up
+        return (1);
+    if (dfs(vars, c_cnt, step + vars->width, e)) // down
+        return (1);
+    if (dfs(vars, c_cnt, step - 1, e)) // left
+        return (1);
+    if (dfs(vars, c_cnt, step + 1, e)) // right
+        return (1);
+    return (0);
+}
+
 static int bfs(t_vars *vars, int *c_cnt, int step, int *exit)
 {
     char *map = vars->map2;
 
-    
+    while (1)
+    {
+        if (dfs(vars, c_cnt, step - vars->width, exit)) // up
+            return (1);
+        if (dfs(vars, c_cnt, step + vars->width, exit)) // down
+            return (1);
+        if (dfs(vars, c_cnt, step - 1, exit)) // left
+            return (1);
+        if (dfs(vars, c_cnt, step + 1, exit)) // right
+            return (1);
+    }
 }
 
 static char *map_copy(t_vars *vars)
