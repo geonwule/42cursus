@@ -5,13 +5,13 @@
 // linked list
 typedef struct s_list
 {
-    void *content;
-    int idx;
+    void *order;
+    long long content;
     struct s_list *next;
     struct s_list *prev;
 } t_list;
 
-t_list *ft_lstnew(void *content, int idx);
+t_list *ft_lstnew(void *order, long long content);
 static t_list *ft_lstlast(t_list *lst);
 void ft_lstadd_back(t_list **lst, t_list *new);
 void ft_lstadd_front(t_list **lst, t_list *new);
@@ -21,8 +21,8 @@ int ft_lstsize(t_list *node);
 int ft_sa(t_list *node, t_list **order, int flag);
 int ft_sb(t_list *node, t_list **order, int flag);
 void ft_ss(t_list *node_a, t_list *node_b, t_list **order);
-int ft_pa(t_list **node_a, t_list **node_b, t_list **order);
-int ft_pb(t_list **node_a, t_list **node_b, t_list **order);
+void ft_pa(t_list **node_a, t_list **node_b, t_list **order);
+void ft_pb(t_list **node_a, t_list **node_b, t_list **order);
 void ft_ra(t_list **node, t_list **order, int flag);
 void ft_rb(t_list **node, t_list **order, int flag);
 void ft_rr(t_list **node_a, t_list **node_b, t_list **order);
@@ -44,14 +44,27 @@ void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order);
 
 void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
-    if (size == 1)
+    if (size <= 1)
         return;
-    int pivot, ra_c = 0, pb_c = 0;
-    pivot = ((*(int *)(*node_a)->content + *(int *)(*node_a)->next->content) / 2);
+    long long pivot, ra_c = 0, pb_c = 0;
+    pivot = (((*node_a)->content + (*node_a)->next->content) / 2);
 
     for (int i = 0; i < size; i++)
     {
-        if (*(int *)(*node_a)->content > pivot)
+        if ((*node_a)->content < 0 && pivot < 0)
+        {
+            if ((*node_a)->content * (-1) > pivot * (-1))
+            {
+                ft_ra(node_a, order, 1);
+                ra_c++;
+            }
+            else
+            {
+                ft_pb(node_a, node_b, order);
+                pb_c++;
+            }
+        }
+        else if ((*node_a)->content > pivot)
         {
             ft_ra(node_a, order, 1);
             ra_c++;
@@ -70,17 +83,30 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 
 void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
-    if (size == 1)
+    if (size <= 1)
     {
         ft_pa(node_a, node_b, order);
         return;
     }
-    int pivot, rb_c = 0, pa_c = 0;
-    pivot = ((*(int *)(*node_b)->content + *(int *)(*node_b)->next->content) / 2);
+    long long pivot, rb_c = 0, pa_c = 0;
+    pivot = (((*node_b)->content + (*node_b)->next->content) / 2);
 
     for (int i = 0; i < size; i++)
     {
-        if (*(int *)(*node_b)->content <= pivot)
+        if ((*node_b)->content < 0 && pivot < 0)
+        {
+            if ((*node_b)->content * (-1) <= pivot * (-1))
+            {
+                ft_rb(node_a, order, 1);
+                rb_c++;
+            }
+            else
+            {
+                ft_pa(node_a, node_b, order);
+                pa_c++;
+            }
+        }
+        else if ((*node_b)->content <= pivot)
         {
             ft_rb(node_b, order, 1);
             rb_c++;
@@ -93,10 +119,9 @@ void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
     }
     for (int i = 0; i < rb_c; i++)
         ft_rrb(node_b, order, 1);
-    a_to_b(rb_c, node_a, node_b, order);
-    b_to_a(pa_c, node_a, node_b, order);
+    a_to_b(pa_c, node_a, node_b, order);
+    b_to_a(rb_c, node_a, node_b, order);
 }
-
 
 void free_av(char **av)
 {
@@ -109,7 +134,7 @@ static int is_duplicate(t_list *node)
 {
     t_list *t_node;
     t_list *head;
-    void *temp;
+    int temp;
     int temp_cnt;
 
     head = node;
@@ -153,7 +178,7 @@ static int over_int(char *str)
         }
         result = 0;
         if (str[i] == '\0')
-            break ;
+            break;
         while (str[i] >= '0' && str[i] <= '9')
         {
             result = result * 10 + str[i] - '0';
@@ -186,8 +211,8 @@ static int no_integer(int ac, char **av)
                 flag = -1;
                 j++;
             }
-            if (flag == -1 && av[i][j] == '\0' || 
-            !(av[i][j] >= '0' && av[i][j] <= '9'))
+            if (flag == -1 && av[i][j] == '\0' ||
+                !(av[i][j] >= '0' && av[i][j] <= '9'))
                 return (1); // error not integer
             while (av[i][j] >= '0' && av[i][j] <= '9')
                 j++;
@@ -240,37 +265,36 @@ int error_check(t_list **node, int ac, char **av)
     return (0);
 }
 
-
 char **temp_av(void)
 {
-    char **av = (char **)malloc(sizeof(char *) * 8);
-    for (int i = 0; i < 7; i++)
+    char **av = (char **)malloc(sizeof(char *) * 4);
+    for (int i = 0; i < 3; i++)
     {
         av[i] = (char *)malloc(sizeof(char) * 10);
     }
     av[0] = "a.out";
-    av[1] = "2";
-    av[2] = "1";
-    av[3] = "3";
-    av[4] = "6";
-    av[5] = "5";
-    av[6] = "8";
-    av[7] = NULL;
+    av[1] = "-1";
+    av[2] = "-2";
+    av[3] = NULL;
+    // av[3] = "-2147483648";
+    // av[4] = "6";
+    // av[5] = "5";
+    // av[6] = "8";
+    // av[7] = NULL;
     return (av);
 }
 
-int main()//int ac, char **av)
+int main(int ac, char **av)
 {
     t_list *node_a;
     t_list *node_a_last;
     t_list *node_b;
     t_list *order;
-    char **av = temp_av();
-    int ac = 7;
+    //char **av = temp_av();
+    //int ac = 3;
     node_a = NULL; // node_init();
     node_b = NULL;
     order = NULL;
-    // char **av = temp_av();
     if (error_check(&node_a, ac, av))
     {
         printf("Error\n");
@@ -288,7 +312,7 @@ int main()//int ac, char **av)
 }
 
 // sort_ utils
-static void ft_atoi(char *str, t_list **node_a, int idx)
+static void ft_atoi(char *str, t_list **node_a)
 {
     int i;
     int flag;
@@ -307,7 +331,7 @@ static void ft_atoi(char *str, t_list **node_a, int idx)
             i++;
         }
         if (str[i] == '\0')
-            return ;
+            return;
         result = 0;
         while (str[i] && str[i] >= '0' && str[i] <= '9')
         {
@@ -315,50 +339,45 @@ static void ft_atoi(char *str, t_list **node_a, int idx)
             i++;
         }
         result *= flag;
-        ft_lstadd_back(node_a, ft_lstnew((void *)&result, idx));
+        ft_lstadd_back(node_a, ft_lstnew("", result));
     }
 }
 
 void node_a_init(t_list **node_a, char **av)
 {
-    t_list *head;
-
-    head = *node_a;
     for (int i = 1; av[i] != NULL; i++)
     {
-        // temp =
-        ft_atoi(av[i], node_a, i);
-        // ft_lstadd_back(node_a, ft_lstnew(temp, i));
+        ft_atoi(av[i], node_a);
     }
-    *node_a = head;
 }
 
 void print_node_a(t_list *node_a)
 {
     while (node_a)
     {
-        printf("%d\n", *(int*)node_a->content);
+        printf("%d\n", (int)node_a->content);
         node_a = node_a->next;
     }
 }
 
+/*
 t_list *ft_lstmid(t_list *left, t_list *right)
 {
     int mid_idx;
     t_list *mid;
 
-    mid_idx = (left->idx + right->idx) / 2;
-    while (left->idx < mid_idx)
+    mid_idx = (left->content + right->content) / 2;
+    while (left->content < mid_idx)
         left = left->next;
     mid = left;
     return (mid);
-}
+}*/
 
 void print_order(t_list *order)
 {
     while (order)
     {
-        printf("%s\n", (char *)order->content); // ft_printf
+        printf("%s\n", (char *)order->order); // ft_printf
         order = order->next;
     }
 }
@@ -377,15 +396,15 @@ void mal_free(t_list *node)
 
 // linked list
 
-t_list *ft_lstnew(void *content, int idx)
+t_list *ft_lstnew(void *order, long long content)
 {
     t_list *new;
 
     new = (t_list *)malloc(sizeof(t_list));
     if (new == NULL)
         return (0);
+    new->order = order;
     new->content = content;
-    new->idx = idx;
     new->next = NULL;
     new->prev = NULL;
     return (new);
@@ -455,7 +474,7 @@ void ft_lstadd_front(t_list **lst, t_list *new)
 
 int ft_sa(t_list *node, t_list **order, int flag)
 {
-    void *temp;
+    int temp;
 
     if (node == NULL || node->next == NULL)
         return (0);
@@ -469,7 +488,7 @@ int ft_sa(t_list *node, t_list **order, int flag)
 
 int ft_sb(t_list *node, t_list **order, int flag)
 {
-    void *temp;
+    int temp;
 
     if (node == NULL || node->next == NULL)
         return (0);
@@ -492,13 +511,13 @@ void ft_ss(t_list *node_a, t_list *node_b, t_list **order)
         ft_lstadd_back(order, ft_lstnew("ss", 0));
 }
 
-int ft_pa(t_list **node_a, t_list **node_b, t_list **order)
+void ft_pa(t_list **node_a, t_list **node_b, t_list **order)
 {
     t_list *temp;
 
     ft_lstadd_back(order, ft_lstnew("pa", 0));
     if ((*node_b) == NULL)
-        return (0);
+        return;
     temp = *node_b;
     (*node_b) = (*node_b)->next;
     temp->next = NULL;
@@ -507,17 +526,18 @@ int ft_pa(t_list **node_a, t_list **node_b, t_list **order)
     ft_lstadd_front(node_a, temp);
 }
 
-int ft_pb(t_list **node_a, t_list **node_b, t_list **order)
+void ft_pb(t_list **node_a, t_list **node_b, t_list **order)
 {
     t_list *temp;
 
     ft_lstadd_back(order, ft_lstnew("pb", 0));
     if ((*node_a) == NULL)
-        return (0);
+        return;
     temp = *node_a;
     (*node_a) = (*node_a)->next;
     temp->next = NULL;
-    (*node_a)->prev = NULL;
+    if (*node_a)
+        (*node_a)->prev = NULL; // SEGV
     ft_lstadd_front(node_b, temp);
 }
 

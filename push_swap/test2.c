@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 int main(int ac, char **av)
 {
-    for (int i = 1; av[i] != NULL; i++)
-        printf("%s\n", av[i]);
+    printf("%lld\n", (((long long)22 + (long long)INT_MAX) / 2));
 }
