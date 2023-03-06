@@ -51,20 +51,20 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 
     for (int i = 0; i < size; i++)
     {
-        if ((*node_a)->content < 0 && pivot < 0)
-        {
-            if ((*node_a)->content * (-1) > pivot * (-1))
-            {
-                ft_ra(node_a, order, 1);
-                ra_c++;
-            }
-            else
-            {
-                ft_pb(node_a, node_b, order);
-                pb_c++;
-            }
-        }
-        else if ((*node_a)->content > pivot)
+        // if ((*node_a)->content < 0 && pivot < 0)
+        // {
+        //     if ((*node_a)->content * (-1) > pivot * (-1))
+        //     {
+        //         ft_ra(node_a, order, 1);
+        //         ra_c++;
+        //     }
+        //     else
+        //     {
+        //         ft_pb(node_a, node_b, order);
+        //         pb_c++;
+        //     }
+        // }
+        if ((*node_a)->content > pivot)
         {
             ft_ra(node_a, order, 1);
             ra_c++;
@@ -93,20 +93,20 @@ void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 
     for (int i = 0; i < size; i++)
     {
-        if ((*node_b)->content < 0 && pivot < 0)
-        {
-            if ((*node_b)->content * (-1) <= pivot * (-1))
-            {
-                ft_rb(node_a, order, 1);
-                rb_c++;
-            }
-            else
-            {
-                ft_pa(node_a, node_b, order);
-                pa_c++;
-            }
-        }
-        else if ((*node_b)->content <= pivot)
+        // if ((*node_b)->content < 0 && pivot < 0)
+        // {
+        //     if ((*node_b)->content * (-1) <= pivot * (-1))
+        //     {
+        //         ft_rb(node_a, order, 1);
+        //         rb_c++;
+        //     }
+        //     else
+        //     {
+        //         ft_pa(node_a, node_b, order);
+        //         pa_c++;
+        //     }
+        // }
+        if ((*node_b)->content <= pivot)
         {
             ft_rb(node_b, order, 1);
             rb_c++;
@@ -267,15 +267,18 @@ int error_check(t_list **node, int ac, char **av)
 
 char **temp_av(void)
 {
-    char **av = (char **)malloc(sizeof(char *) * 4);
-    for (int i = 0; i < 3; i++)
+    char **av = (char **)malloc(sizeof(char *) * 7);
+    for (int i = 0; i < 4; i++)
     {
         av[i] = (char *)malloc(sizeof(char) * 10);
     }
     av[0] = "a.out";
-    av[1] = "-1";
-    av[2] = "-2";
-    av[3] = NULL;
+    av[1] = "6";
+    av[2] = "2";
+    av[3] = "1";
+    av[4] = "0";
+    av[5] = "4";
+    av[6] = NULL;
     // av[3] = "-2147483648";
     // av[4] = "6";
     // av[5] = "5";
@@ -284,14 +287,14 @@ char **temp_av(void)
     return (av);
 }
 
-int main(int ac, char **av)
+int main()//(int ac, char **av)
 {
     t_list *node_a;
     t_list *node_a_last;
     t_list *node_b;
     t_list *order;
-    //char **av = temp_av();
-    //int ac = 3;
+    char **av = temp_av();
+    int ac = 6;
     node_a = NULL; // node_init();
     node_b = NULL;
     order = NULL;

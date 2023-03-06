@@ -34,4 +34,13 @@ main함수 실행 시, argc argv를 통해 sort할 숫자 입력
     5. 중복되는 숫자 -- is_duplicate
 */
 
+1-1. 겪은 어려움
+    1) a_to_b 에서 pivot 설정시 pivot = (node(i) + node(i+1))/2
+    node(i) > pivot = ra
+    node(i) <= pb 
+    --> 양수끼리는 적용 ok 1 2 -> pivot = 1
+    1 -> pb 2 -> ra
+    but 음수끼리는 fail -1 -2 -> pivot = -1
+    -1 -> pb, -2 -> pb ------ 둘을 나눠야 하는데 실패..
+
 2. push_swap 구현
