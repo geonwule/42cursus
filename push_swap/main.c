@@ -42,28 +42,30 @@ void mal_free(t_list *node);
 void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order);
 void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order);
 
+int check = 0; // remove
+#include <stdio.h>
+int fuck = 0;
+
 void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
+    // printf("---------a-------------size = %d\n",size);
+    // printf("check = %d\n", ++check);
+    // printf("-----------node_a-------\n");
+    // print_node_a(*node_a);
+    // printf("-----------node_b-------\n");
+    // print_node_a(*node_b);
     if (size <= 1)
         return;
     long long pivot, ra_c = 0, pb_c = 0;
-    pivot = (((*node_a)->content + (*node_a)->next->content) / 2);
-
+    long long x = (*node_a)->content;
+    long long y = (*node_a)->next->content;
+    pivot = ((x + y) / 2);
+    // pivot = (((*node_a)->content + (*node_a)->next->content) / 2);
+    if (pivot < 0 || (pivot == 0 && (x < 0 || y < 0)))
+        pivot -= 1;
+    //printf("-----pivot = %lld\n", pivot);
     for (int i = 0; i < size; i++)
     {
-        // if ((*node_a)->content < 0 && pivot < 0)
-        // {
-        //     if ((*node_a)->content * (-1) > pivot * (-1))
-        //     {
-        //         ft_ra(node_a, order, 1);
-        //         ra_c++;
-        //     }
-        //     else
-        //     {
-        //         ft_pb(node_a, node_b, order);
-        //         pb_c++;
-        //     }
-        // }
         if ((*node_a)->content > pivot)
         {
             ft_ra(node_a, order, 1);
@@ -71,6 +73,10 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
         }
         else
         {
+            if (ft_lstsize(*node_b) == 1 && (*node_b)->content == -1000)
+            {
+                fuck = 1;
+            }
             ft_pb(node_a, node_b, order);
             pb_c++;
         }
@@ -83,29 +89,24 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 
 void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
-    if (size <= 1)
+    if (size <= 0)
+        return ;
+    if (size == 1)
     {
         ft_pa(node_a, node_b, order);
         return;
     }
     long long pivot, rb_c = 0, pa_c = 0;
+    long long x = (*node_b)->content;
+    long long y = (*node_b)->next->content;
+    pivot = ((x + y) / 2);
+    if (pivot < 0 || (pivot == 0 && (x < 0 || y < 0)))
+        pivot -= 1;
     pivot = (((*node_b)->content + (*node_b)->next->content) / 2);
-
+    if (pivot <= 0)
+        pivot -= 1;
     for (int i = 0; i < size; i++)
     {
-        // if ((*node_b)->content < 0 && pivot < 0)
-        // {
-        //     if ((*node_b)->content * (-1) <= pivot * (-1))
-        //     {
-        //         ft_rb(node_a, order, 1);
-        //         rb_c++;
-        //     }
-        //     else
-        //     {
-        //         ft_pa(node_a, node_b, order);
-        //         pa_c++;
-        //     }
-        // }
         if ((*node_b)->content <= pivot)
         {
             ft_rb(node_b, order, 1);
@@ -267,18 +268,18 @@ int error_check(t_list **node, int ac, char **av)
 
 char **temp_av(void)
 {
-    char **av = (char **)malloc(sizeof(char *) * 7);
-    for (int i = 0; i < 4; i++)
+    char **av = (char **)malloc(sizeof(char *) * 4);
+    for (int i = 0; i < 3; i++)
     {
         av[i] = (char *)malloc(sizeof(char) * 10);
     }
     av[0] = "a.out";
-    av[1] = "6";
-    av[2] = "2";
-    av[3] = "1";
-    av[4] = "0";
-    av[5] = "4";
-    av[6] = NULL;
+    av[1] = "-2";
+    av[2] = "-3";
+    av[3] = NULL;
+    // av[4] = "0";
+    // av[5] = "4";
+    // av[6] = NULL;
     // av[3] = "-2147483648";
     // av[4] = "6";
     // av[5] = "5";
@@ -287,14 +288,14 @@ char **temp_av(void)
     return (av);
 }
 
-int main()//(int ac, char **av)
+int main(int ac, char **av)
 {
     t_list *node_a;
     t_list *node_a_last;
     t_list *node_b;
     t_list *order;
-    char **av = temp_av();
-    int ac = 6;
+    // char **av = temp_av();
+    // int ac = 3;
     node_a = NULL; // node_init();
     node_b = NULL;
     order = NULL;
@@ -307,8 +308,8 @@ int main()//(int ac, char **av)
     node_a_last = ft_lstlast(node_a);
     int size = ft_lstsize(node_a);
     a_to_b(size, &node_a, &node_b, &order);
-    print_node_a(node_a);
-    // print_order(order);
+    //print_node_a(node_a);
+    print_order(order);
     mal_free(node_a);
     mal_free(node_b);
     mal_free(order);
