@@ -53,10 +53,105 @@ void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order);
 // #include <stdio.h>
 // int fuck = 0;
 
-void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
+long long *max_min_check(t_list *node)
 {
+    long long max_min[2];
+    max_min[0] = node->content;
+    max_min[1] = node->content;
+    node = node->next;
+    while (node)
+    {
+        if (max_min[0] < node->content)
+            max_min[0] = node->content;
+        if (max_min[1] > node->content)
+            max_min[1] = node->content;
+        node = node->next;
+    }
+    return (max_min);
+}
+
+void b_to_a_under_five(int size, t_list **node_a, t_list **node_b, t_list **order)
+{
+    if (size <= 0)
+        return;
+    if (size == 1)
+    {
+        ft_pa(node_a, node_b, order);
+        return;
+    }
+    if (size == 2)
+    {
+        if ((*node_b)->content <= (*node_b)->next->content)
+            ft_sb(*node_b, order, 1);
+        ft_pa(node_a, node_b, order);
+        ft_pa(node_a, node_b, order);
+        return;
+    }
+}
+
+void a_to_b_under_five(int size, t_list **node_a, t_list **node_b, t_list **order)
+{
+    long long max;
+    long long min;
     if (size <= 1)
         return;
+    if (size == 2)
+    {
+        if ((*node_a)->content > (*node_a)->next->content)
+            ft_sa(*node_a, order, 1);
+        return;
+    }
+    max = max_min_check(*node_a)[0];
+    min = max_min_check(*node_a)[1];
+    t_list *temp = *node_a;
+    if (size == 3)
+    {
+        if ((*node_a)->content == max)
+        {
+            if ((*node_a)->next->content == min)    // 2 -1 1
+            {
+                ft_rra(node_a, order, 1);
+                ft_rra(node_a, order, 1);
+            }
+            else     // 2 1 -1
+            {
+                ft_sa(*node_a, order, 1);
+                ft_rra(node_a, order, 1);
+            }
+        }
+        else if ((*node_a)->content == min) // -1 2 1
+        {
+            ft_rra(node_a, order, 1);
+            ft_sa(*node_a, order, 1);
+        }
+        else
+        {
+            if (ft_lstlast(*node_a)->content == max) // 1 -1 2
+                ft_sa(*node_a, order, 1);
+            else    // 1 2 -1
+                ft_rra(node_a, order, 1);
+        }
+    }
+    // int i;
+    // while (size > 0)
+    // {
+    //     i = 0;
+    //     while (i < size)
+    //     {
+
+    //     }
+    // }
+}
+
+void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
+{
+    // if (size <= 1)
+    //     return;
+    if (size <= 2)
+    {
+        a_to_b_under_five(size, node_a, node_b, order);
+        return;
+    }
     long long pivot, ra_c = 0, pb_c = 0;
     long long x = (*node_a)->content;
     long long y = (*node_a)->next->content;
@@ -84,11 +179,16 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 
 void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
-    if (size <= 0)
-        return;
-    if (size == 1)
+    // if (size <= 0)
+    //     return;
+    // if (size == 1)
+    // {
+    //     ft_pa(node_a, node_b, order);
+    //     return;
+    // }
+    if (size <= 2)
     {
-        ft_pa(node_a, node_b, order);
+        b_to_a_under_five(size, node_a, node_b, order);
         return;
     }
     long long pivot, rb_c = 0, pa_c = 0;
@@ -146,7 +246,6 @@ int already_sort(t_list *node_a)
     int i;
     long long temp;
 
-    // 1 2 3 4 5
     i = 0;
     node_a = node_a->next;
     while (node_a)
@@ -179,9 +278,12 @@ int main(int ac, char **av)
     size = ft_lstsize(node_a);
     if (already_sort(node_a))
         return (0);
-    a_to_b(size, &node_a, &node_b, &order);
-    print_node_a(node_a);
-    // print_order(order);
+    if (size <= 3)
+        a_to_b_under_five(size, &node_a, &node_b, &order);
+    else
+        a_to_b(size, &node_a, &node_b, &order);
+    // print_node_a(node_a);
+    print_order(order);
     mal_free(node_a);
     mal_free(node_b);
     mal_free(order);
