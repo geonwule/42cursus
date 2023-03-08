@@ -1,13 +1,16 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
-int main(int ac, char **av)
+int	main(void)
 {
-    printf("%lld\n", (((long long)22 + (long long)INT_MAX) / 2));
+	printf("%d %d\n", INT_MAX, INT_MIN);
 }
 /*void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
+	long long	x;
+	long long	y;
+
     // printf("---------a-------------size = %d\n",size);
     // printf("check = %d\n", ++check);
     // printf("-----------node_a-------\n");
@@ -15,10 +18,10 @@ int main(int ac, char **av)
     // printf("-----------node_b-------\n");
     // print_node_a(*node_b);
     if (size <= 1)
-        return;
+        return ;
     long long pivot, ra_c = 0, pb_c = 0;
-    long long x = (*node_a)->content;
-    long long y = (*node_a)->next->content;
+    x = (*node_a)->content;
+    y = (*node_a)->next->content;
     pivot = ((x + y) / 2);
     // pivot = (((*node_a)->content + (*node_a)->next->content) / 2);
     if (pivot < 0 || (pivot == 0 && (x < 0 || y < 0)))
@@ -47,14 +50,14 @@ int main(int ac, char **av)
     b_to_a(pb_c, node_a, node_b, order);
 }
 
-void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
+void	b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
     if (size <= 0)
         return ;
     if (size == 1)
     {
         ft_pa(node_a, node_b, order);
-        return;
+        return ;
     }
     long long pivot, rb_c = 0, pa_c = 0;
     long long x = (*node_b)->content;
