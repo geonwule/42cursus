@@ -17,6 +17,13 @@ void ft_lstadd_back(t_list **lst, t_list *new);
 void ft_lstadd_front(t_list **lst, t_list *new);
 int ft_lstsize(t_list *node);
 
+// error_check
+static int is_duplicate(t_list *node);
+static int over_int(char *str);
+static int no_integer(char **av);
+int min_digit_check(char **av);
+int error_check(t_list **node, int ac, char **av);
+
 // order
 int ft_sa(t_list *node, t_list **order, int flag);
 int ft_sb(t_list *node, t_list **order, int flag);
@@ -42,28 +49,20 @@ void mal_free(t_list *node);
 void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order);
 void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order);
 
-int check = 0; // remove
-#include <stdio.h>
-int fuck = 0;
+// int check = 0; // remove
+// #include <stdio.h>
+// int fuck = 0;
 
 void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
-    // printf("---------a-------------size = %d\n",size);
-    // printf("check = %d\n", ++check);
-    // printf("-----------node_a-------\n");
-    // print_node_a(*node_a);
-    // printf("-----------node_b-------\n");
-    // print_node_a(*node_b);
     if (size <= 1)
         return;
     long long pivot, ra_c = 0, pb_c = 0;
     long long x = (*node_a)->content;
     long long y = (*node_a)->next->content;
     pivot = ((x + y) / 2);
-    // pivot = (((*node_a)->content + (*node_a)->next->content) / 2);
     if (pivot < 0 || (pivot == 0 && (x < 0 || y < 0)))
         pivot -= 1;
-    //printf("-----pivot = %lld\n", pivot);
     for (int i = 0; i < size; i++)
     {
         if ((*node_a)->content > pivot)
@@ -73,10 +72,6 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
         }
         else
         {
-            if (ft_lstsize(*node_b) == 1 && (*node_b)->content == -1000)
-            {
-                fuck = 1;
-            }
             ft_pb(node_a, node_b, order);
             pb_c++;
         }
@@ -90,7 +85,7 @@ void a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 {
     if (size <= 0)
-        return ;
+        return;
     if (size == 1)
     {
         ft_pa(node_a, node_b, order);
@@ -124,13 +119,75 @@ void b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
     b_to_a(rb_c, node_a, node_b, order);
 }
 
-void free_av(char **av)
+char **temp_av(void)
 {
-    for (int i = 0; av[i] != NULL; i++)
-        free(av[i]);
-    free(av);
+    char **av = (char **)malloc(sizeof(char *) * 4);
+    for (int i = 0; i < 3; i++)
+    {
+        av[i] = (char *)malloc(sizeof(char) * 10);
+    }
+    av[0] = "a.out";
+    av[1] = "-2";
+    av[2] = "-3";
+    av[3] = NULL;
+    // av[4] = "0";
+    // av[5] = "4";
+    // av[6] = NULL;
+    // av[3] = "-2147483648";
+    // av[4] = "6";
+    // av[5] = "5";
+    // av[6] = "8";
+    // av[7] = NULL;
+    return (av);
 }
 
+int already_sort(t_list *node_a)
+{
+    int i;
+    long long temp;
+
+    // 1 2 3 4 5
+    i = 0;
+    node_a = node_a->next;
+    while (node_a)
+    {
+        temp = node_a->prev->content;
+        if (temp > node_a->content)
+            return (0);
+        node_a = node_a->next;
+    }
+    mal_free(node_a);
+    return (1);
+}
+
+int main(int ac, char **av)
+{
+    t_list *node_a;
+    t_list *node_b;
+    t_list *order;
+    int size;
+    // char **av = temp_av();
+    // int ac = 3;
+    node_a = NULL; // node_init();
+    node_b = NULL;
+    order = NULL;
+    if (error_check(&node_a, ac, av))
+    {
+        printf("Error\n");
+        return (0);
+    }
+    size = ft_lstsize(node_a);
+    if (already_sort(node_a))
+        return (0);
+    a_to_b(size, &node_a, &node_b, &order);
+    print_node_a(node_a);
+    // print_order(order);
+    mal_free(node_a);
+    mal_free(node_b);
+    mal_free(order);
+}
+
+// error_check
 static int is_duplicate(t_list *node)
 {
     t_list *t_node;
@@ -192,7 +249,7 @@ static int over_int(char *str)
     return (0);
 }
 
-static int no_integer(int ac, char **av)
+static int no_integer(char **av)
 {
     int i;
     int j;
@@ -249,7 +306,7 @@ int min_digit_check(char **av)
 
 int error_check(t_list **node, int ac, char **av)
 {
-    if (ac < 2 || min_digit_check(av) || no_integer(ac, av))
+    if (ac < 2 || min_digit_check(av) || no_integer(av))
         return (1);
     for (int i = 1; av[i] != NULL; i++)
     {
@@ -264,55 +321,6 @@ int error_check(t_list **node, int ac, char **av)
         return (1);
     }
     return (0);
-}
-
-char **temp_av(void)
-{
-    char **av = (char **)malloc(sizeof(char *) * 4);
-    for (int i = 0; i < 3; i++)
-    {
-        av[i] = (char *)malloc(sizeof(char) * 10);
-    }
-    av[0] = "a.out";
-    av[1] = "-2";
-    av[2] = "-3";
-    av[3] = NULL;
-    // av[4] = "0";
-    // av[5] = "4";
-    // av[6] = NULL;
-    // av[3] = "-2147483648";
-    // av[4] = "6";
-    // av[5] = "5";
-    // av[6] = "8";
-    // av[7] = NULL;
-    return (av);
-}
-
-int main(int ac, char **av)
-{
-    t_list *node_a;
-    t_list *node_a_last;
-    t_list *node_b;
-    t_list *order;
-    // char **av = temp_av();
-    // int ac = 3;
-    node_a = NULL; // node_init();
-    node_b = NULL;
-    order = NULL;
-    if (error_check(&node_a, ac, av))
-    {
-        printf("Error\n");
-        return (0);
-    }
-    // node_a_init(&node_a, av);
-    node_a_last = ft_lstlast(node_a);
-    int size = ft_lstsize(node_a);
-    a_to_b(size, &node_a, &node_b, &order);
-    //print_node_a(node_a);
-    print_order(order);
-    mal_free(node_a);
-    mal_free(node_b);
-    mal_free(order);
 }
 
 // sort_ utils
