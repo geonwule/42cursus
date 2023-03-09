@@ -22,6 +22,20 @@ typedef struct s_list
 //     return (new);
 // }
 
+//print_node_a(node_a);
+/*
+void	print_node_a(t_list *node_a)
+{
+	while (node_a)
+	{
+		printf("%d\n", (int)node_a->content);
+		node_a = node_a->next;
+	}
+}
+*/
+
+
+
 t_list *ft_lstnew(void *content, long long idx)
 {
     t_list *new;

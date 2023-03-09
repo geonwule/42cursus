@@ -1,6 +1,6 @@
 HEAD = includes
 
-SRCS = srcs/main.c srcs/a_to_b_util.c srcs/check_error.c srcs/free.c srcs/linked_list.c\
+SRCS = srcs/main.c srcs/a_to_b.c srcs/b_to_a.c srcs/a_to_b_util.c srcs/check_error.c srcs/free.c srcs/linked_list.c\
 	srcs/order1.c srcs/order2.c srcs/order3.c srcs/sort_util.c\
 
 PRINTF_DIR = ft_printf
