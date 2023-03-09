@@ -1,6 +1,6 @@
 HEAD = includes
 
-SRCS = srcs/main.c srcs/a_to_b_util.c srcs/error_check.c srcs/free.c srcs/linked_list.c\
+SRCS = srcs/main.c srcs/a_to_b_util.c srcs/check_error.c srcs/free.c srcs/linked_list.c\
 	srcs/order1.c srcs/order2.c srcs/order3.c srcs/sort_util.c\
 
 PRINTF_DIR = ft_printf
@@ -34,8 +34,12 @@ all : ${NAME}
 ${NAME} : ${OBJS}
 	@make -C ${PRINTF_DIR}
 	@mv ${PRINTF_DIR}/${PRINTF} .
-	@${CC} $^ ${PRINTF} -o ${NAME}
+	@${CC} ${CFLAGS} $^ ${PRINTF} -o ${NAME} -I ${HEAD}
 	@echo "$(GREEN)push_swap compiled!$(DEF_COLOR)"
+
+debug : ${OBJS}
+	@${CC} -g3 -fsanitize=address $^ ${PRINTF} -o ${NAME} -I ${HEAD}
+	@echo "$(GREEN)push_swap debug file compiled!$(DEF_COLOR)"
 
 clean :
 	@make clean -C ${PRINTF_DIR}

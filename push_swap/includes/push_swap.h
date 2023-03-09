@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:03:56 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/08 23:41:07 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/09 20:01:59 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define PUSH_SWAP_H
 
 # include <limits.h>
-# include <stdio.h> // temporary stdio printf
 # include <stdlib.h>
 # include <unistd.h>
-//# include "../ft_printf/includes/ft_printf.h"
 
 // linked list
 typedef struct s_list
@@ -37,9 +35,8 @@ int					ft_lstsize(t_list *node);
 // ft_printf
 int					ft_printf(const char *str, ...);
 
-// error_check
-int					min_digit_check(char **av);
-int					error_check(t_list **node, int ac, char **av);
+// check_error
+int					check_error(t_list **node, int ac, char **av);
 
 // util_a_to_b
 int					already_sort(t_list *node_a);

@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 22:13:49 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/08 23:26:17 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/09 20:04:38 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,15 @@ int	main(int ac, char **av)
 	t_list	*node_b;
 	t_list	*order;
 	int		size;
+	//char	**av;
 
+	//av = av_set(ac, argv);
 	// char **av = temp_av();
 	// int ac = 3;
 	node_a = NULL; // node_init();
 	node_b = NULL;
 	order = NULL;
-	if (error_check(&node_a, ac, av))
+	if (check_error(&node_a, ac, av))
 	{
 		ft_printf("Error\n");
 		return (0);

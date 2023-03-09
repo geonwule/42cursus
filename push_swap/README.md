@@ -34,7 +34,9 @@ main함수 실행 시, argc argv를 통해 sort할 숫자 입력
     5. 중복되는 숫자 -- is_duplicate
 */
 
-1-1. 겪은 어려움
+2. 겪은 어려움
+
+2-1
     1) a_to_b 에서 pivot 설정시 pivot = (node(i) + node(i+1))/2
     node(i) > pivot = ra
     node(i) <= pb 
@@ -43,8 +45,18 @@ main함수 실행 시, argc argv를 통해 sort할 숫자 입력
     but 음수끼리는 fail -1 -2 -> pivot = -1
     -1 -> pb, -2 -> pb ------ 둘을 나눠야 하는데 실패..
 
-1-2 이미 오름차순 정렬 되어있는것은 건들면 x 명령 필요없음. 
+2-2 
+    이미 오름차순 정렬 되어있는것은 건들면 x 명령 필요없음. 
     -> 첫 a_to_b 실행시 솔트되어있는 아이는 한곳에 몰아놓고 나중에 끼워주기..?
     -> 처음부터 끝까지 오름차순 되어있을때만 바로 리턴해주기 -> a_to_b 실행전 확인 함수 하나 만들기.
     * already_sort 함수 만들어서 이미 오름차순이면 메인에서 리턴하게 했음.
-2. push_swap 구현
+
+2-3
+    Makefile만들기 전 크게 main함수만 있었을땐 잘 돌아가던것이 Makefile만들어주고
+    srcs, includes폴더에 헤더와 c파일들을 분할 후 링크드 해서 컴파일을 하니 
+    EXC_BAD_ACCESS 오류가 발생(av를 참조했을시)(어쩔땐 안발생 어쩔땐 발생) -> 컴파일시 -fsanitize옵션 주면 없어지고, 옵션뺴면 생김.. -> Slack에 찾아본 결과 정수형 말록을 안해줘서 생긴다?는 의견 도출.. malloc으로 메모리값 초기화를 안해주면 어쩔땐되고 어쩔땐 쓰레기가 들어가서 안된다? main함수의 인자였던 av를 정수형 말록을 해줘야 하나 고민중...
+    * push_swap 안에 있는 ft_printf와 함수가 이름이 겹쳐서 발생한것..
+    push_swap의 error_check함수와 ft_printf의 error_check함수가 겹침
+    ft_printf의 라이브러리 .a 파일이 같이 컴파일 되면서 오류가 발생..
+
+3. push_swap 구현
