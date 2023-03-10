@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:12:16 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/08 23:21:47 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 19:36:25 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ t_list	*ft_lstnew(void *order, long long content)
 
 	new = (t_list *)malloc(sizeof(t_list));
 	if (new == NULL)
-		return (0);
+	{
+		ft_printf("Dynamic memory allocation error\n");
+		exit (1);
+	}
 	new->order = order;
 	new->content = content;
 	new->next = NULL;

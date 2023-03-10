@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:13:18 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/10 17:33:58 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 19:00:24 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,27 @@ static int	sub_no_int(char **av, int i, int j, int flag)
 			flag = -1;
 			j++;
 		}
-		if ((flag == -1 && av[i][j] == '\0') ||
+		if (flag == 1 && av[i][j] == '\0')
+			return (0);
+		else if ((flag == -1 && av[i][j] == '\0') ||
 			!(av[i][j] >= '0' && av[i][j] <= '9'))
 			return (1);
-		else if (av[i][j] == '\0')
-			return (0);
 		while (av[i][j] >= '0' && av[i][j] <= '9')
 			j++;
 	}
+	return (0);
 }
 
 static int	no_integer(char **av)
 {
 	int	i;
 	int	j;
-	int	flag;
 
 	i = 0;
 	while (av[++i] != NULL)
 	{
 		j = 0;
-		if (sub_no_int(av, i, j, flag))
+		if (sub_no_int(av, i, j, 1))
 			return (1);
 	}
 	return (0);

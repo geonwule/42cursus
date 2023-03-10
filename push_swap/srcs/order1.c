@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:16:07 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/08 23:16:13 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:28:10 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_pa(t_list **node_a, t_list **node_b, t_list **order)
 	(*node_b) = (*node_b)->next;
 	temp->next = NULL;
 	if (*node_b)
-		(*node_b)->prev = NULL; // SEGV
+		(*node_b)->prev = NULL;
 	ft_lstadd_front(node_a, temp);
 }
 
@@ -77,6 +77,6 @@ void	ft_pb(t_list **node_a, t_list **node_b, t_list **order)
 	(*node_a) = (*node_a)->next;
 	temp->next = NULL;
 	if (*node_a)
-		(*node_a)->prev = NULL; // SEGV
+		(*node_a)->prev = NULL;
 	ft_lstadd_front(node_b, temp);
 }

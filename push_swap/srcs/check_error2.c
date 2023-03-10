@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 17:10:07 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/10 17:49:18 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:40:31 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static int	sub_over_int(char *str, long long i, long long flag,
 		if (result > (long long)INT_MAX || result < (long long)INT_MIN)
 			return (1);
 	}
+	return (0);
 }
 
 int	over_int(char *str)
