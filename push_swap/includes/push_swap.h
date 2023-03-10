@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:03:56 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/09 20:11:24 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:12:21 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int					ft_lstsize(t_list *node);
 int					ft_printf(const char *str, ...);
 
 // check_error
+int					is_duplicate(t_list *node);
+int					over_int(char *str);
 int					check_error(t_list **node, int ac, char **av);
 
 //a_to_b
@@ -46,9 +48,16 @@ void				b_to_a(int size, t_list **node_a, t_list **node_b,
 
 // util_a_to_b
 int					already_sort(t_list *node_a);
+void				max_min_check(t_list *node, int *max, int *min);
 void				b_to_a_f(int size, t_list **node_a, t_list **node_b,
 						t_list **order);
 void				a_to_b_f(int size, t_list **node_a, t_list **node_b,
+						t_list **order);
+// util_a_to_b_f
+void				t_size(int *mm, t_list **node_a, t_list **order);
+void				f_size(int min, t_list **node_a, t_list **node_b,
+						t_list **order);
+void				ff_size(int min, t_list **node_a, t_list **node_b,
 						t_list **order);
 
 // order1

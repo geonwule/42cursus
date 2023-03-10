@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:38:32 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/09 20:38:52 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:29:32 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static long long	b_pivot(int size, t_list **node_a,
 	if (size <= 2)
 	{
 		b_to_a_f(size, node_a, node_b, order);
-		return (NULL);
+		return ((long long)INT_MAX + 1);
 	}
 	pivot = (((*node_b)->content + (*node_b)->next->content) / 2);
 	if (pivot < 0 || (pivot == 0 && ((*node_b)->content < 0
@@ -32,7 +32,7 @@ static long long	b_pivot(int size, t_list **node_a,
 static int	sub_b(long long pivot, t_list **node_a,
 					t_list **node_b, t_list **order)
 {
-	if ((*node_b)->content > pivot)
+	if ((*node_b)->content <= pivot)
 	{
 		ft_rb(node_b, order, 1);
 		return (1);
@@ -51,8 +51,8 @@ void	b_to_a(int size, t_list **node_a, t_list **node_b, t_list **order)
 	int			i;
 	int			temp;
 
-	pivot = a_pivot(size, node_a, node_b, order);
-	if (pivot == NULL)
+	pivot = b_pivot(size, node_a, node_b, order);
+	if (pivot == (long long)INT_MAX + 1)
 		return ;
 	rb_pa_c[0] = 0;
 	rb_pa_c[1] = 0;

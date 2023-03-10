@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:09:04 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/09 20:40:42 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:18:19 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static long long	a_pivot(int size, t_list **node_a,
 	if (size <= 2)
 	{
 		a_to_b_f(size, node_a, node_b, order);
-		return (NULL);
+		return ((long long)INT_MAX + 1);
 	}
 	pivot = (((*node_a)->content + (*node_a)->next->content) / 2);
 	if (pivot < 0 || (pivot == 0 && ((*node_a)->content < 0
@@ -52,7 +52,7 @@ void	a_to_b(int size, t_list **node_a, t_list **node_b, t_list **order)
 	int			temp;
 
 	pivot = a_pivot(size, node_a, node_b, order);
-	if (pivot == NULL)
+	if (pivot == (long long)INT_MAX + 1)
 		return ;
 	ra_pb_c[0] = 0;
 	ra_pb_c[1] = 0;
