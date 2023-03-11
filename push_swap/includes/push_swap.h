@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:03:56 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/10 18:45:26 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/11 17:26:04 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ typedef struct s_list
 	struct s_list	*prev;
 }					t_list;
 
+typedef struct s_vars
+{
+	t_list	*node_a;
+	t_list	*node_b;
+	t_list	*order;
+	int		size;
+}			t_vars;
+
 t_list				*ft_lstnew(void *order, long long content);
 t_list				*ft_lstlast(t_list *lst);
 void				ft_lstadd_back(t_list **lst, t_list *new);
@@ -38,17 +46,13 @@ int					is_duplicate(t_list *node);
 int					over_int(char *str);
 int					check_error(t_list **node, int ac, char **av);
 //a_to_b
-void				a_to_b(int size, t_list **node_a, t_list **node_b,
-						t_list **order);
-void				b_to_a(int size, t_list **node_a, t_list **node_b,
-						t_list **order);
+void				a_to_b(int size, t_vars *vars);
+void				b_to_a(int size, t_vars *vars);
 // util_a_to_b
 int					already_sort(t_list *node_a);
 void				max_min_check(t_list *node, int *max, int *min);
-void				b_to_a_f(int size, t_list **node_a, t_list **node_b,
-						t_list **order);
-void				a_to_b_f(int size, t_list **node_a, t_list **node_b,
-						t_list **order);
+void				b_to_a_f(t_vars *vars);
+void				a_to_b_f(t_vars *vars);
 // util_a_to_b_f
 void				t_size(int *mm, t_list **node_a, t_list **order);
 void				f_size(int min, t_list **node_a, t_list **node_b,
