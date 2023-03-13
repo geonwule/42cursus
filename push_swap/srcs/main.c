@@ -6,7 +6,7 @@
 /*   By: geonwule <geonwule@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 22:13:49 by geonwule          #+#    #+#             */
-/*   Updated: 2023/03/11 17:26:30 by geonwule         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:50:15 by geonwule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,29 @@
 
 int	main(int ac, char **av)
 {
-	t_vars	*vars;
+	t_list	*node_a;
+	t_list	*node_b;
+	t_list	*order;
+	int		size;
 
-	vars->node_a = NULL;
-	vars->node_b = NULL;
-	vars->order = NULL;
-	if (check_error(vars->node_a, ac, av))
+	node_a = NULL;
+	node_b = NULL;
+	order = NULL;
+	if (check_error(&node_a, ac, av))
 	{
 		ft_printf("Error\n");
 		return (0);
 	}
-	vars->size = ft_lstsize(vars->node_a);
-	if (already_sort(vars->node_a))
+	size = ft_lstsize(node_a);
+	if (already_sort(node_a))
 	{
-		all_free(vars->node_a, vars->node_b, vars->order);
+		all_free(node_a, node_b, order);
 		return (0);
 	}
-	if (vars->size <= 5)
-		a_to_b_f(vars);
+	if (size <= 5)
+		a_to_b_f(size, &node_a, &node_b, &order);
 	else
-		a_to_b(vars->size, vars);
-	print_order(vars->order);
-	all_free(vars->node_a, vars->node_b, vars->order);
+		a_to_b(size, &node_a, &node_b, &order);
+	print_order(order);
+	all_free(node_a, node_b, order);
 }

@@ -1,4 +1,4 @@
-HEAD = includes
+HEAD = ./includes
 
 SRCS = srcs/main.c srcs/a_to_b.c srcs/b_to_a.c srcs/a_to_b_f_util.c srcs/a_to_b_util.c\
 		srcs/check_error.c srcs/check_error2.c\
